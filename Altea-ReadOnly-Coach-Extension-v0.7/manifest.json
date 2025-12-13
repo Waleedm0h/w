@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Altéa Read‑Only Coach",
+  "version": "0.7.0",
+  "description": "Read-only coach: PNR/Ticket summary panel + command suggestions. No auto-fill, no edits.",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://*.resdesktop.altea.amadeus.com/*",
+    "https://*.altea.amadeus.com/*",
+    "https://*.amadeus.com/*",
+    "file:///*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.resdesktop.altea.amadeus.com/*",
+        "https://*.altea.amadeus.com/*",
+        "https://*.amadeus.com/*",
+        "file:///*/*"
+      ],
+      "js": [
+        "rules.js",
+        "content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ]
+}
