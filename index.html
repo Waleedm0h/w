@@ -1,4 +1,4 @@
-استبدل `index.html` بهذا المحتوى:
+ضع هذا كـ `index.html` داخل نفس المستودع `https://waleedm0h.github.io/w/`:
 
 ```html
 <!doctype html>
@@ -6,241 +6,544 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>خطوات الحجز</title>
+  <title>خطوات الحجز - أماديوس (SV)</title>
   <style>
     :root{
       --bg:#ffffff;
-      --panel:#f6f6f6;
-      --panel2:#ededed;
-      --line:#cfcfcf;
-      --text:#111111;
-      --muted:#444444;
+      --panel:#f3f4f6;
+      --panel2:#f9fafb;
+      --text:#0b0f19;
+      --muted:#4b5563;
+      --line:#d1d5db;
 
-      --fixed:#0b2a55;   /* الثابت بالأزرق الغامق */
-      --important:#c1121f; /* المهم بالأحمر */
+      --fixed:#0b2a5b;      /* ثابت = أزرق غامق */
+      --var:#c1121f;        /* متغير = أحمر */
+      --shadow: 0 12px 30px rgba(0,0,0,.08);
+      --radius:16px;
     }
 
     *{box-sizing:border-box}
-
     body{
       margin:0;
-      background:var(--bg);
-      color:var(--text);
-      font-family: Tahoma, Arial, system-ui, -apple-system, "Segoe UI";
+      font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial;
+      background: var(--bg);
+      color: var(--text);
       user-select:none;
       -webkit-user-select:none;
       -ms-user-select:none;
-      -moz-user-select:none;
     }
-
-    .wrap{max-width:980px; margin:0 auto; padding:22px}
-
+    .wrap{max-width:1200px; margin:0 auto; padding:22px}
     header{
       border:1px solid var(--line);
-      background:var(--panel);
-      border-radius:14px;
+      border-radius: var(--radius);
       padding:16px 16px;
+      background: var(--panel2);
+      box-shadow: var(--shadow);
+      display:flex; gap:14px; align-items:flex-start; justify-content:space-between;
+      flex-wrap:wrap;
     }
-    h1{margin:0; font-size:20px; color:#000}
-    p{margin:8px 0 0; color:var(--muted); font-size:13px; line-height:1.7}
+    header h1{margin:0; font-size:20px}
+    header p{margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.7}
 
-    .grid{margin-top:14px; display:flex; flex-direction:column; gap:12px}
+    .grid{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      gap:14px;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
 
-    section.card{
+    .card{
       border:1px solid var(--line);
-      background:var(--panel);
-      border-radius:14px;
+      border-radius: var(--radius);
       overflow:hidden;
+      background: var(--panel2);
+      box-shadow: var(--shadow);
     }
-    .card .hd{
-      padding:12px 14px;
-      background:var(--panel2);
+    .hd{
+      padding:12px 12px;
       border-bottom:1px solid var(--line);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
+      background: var(--panel);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
     }
-    .card .hd .t{
-      font-weight:800;
-      color:#000;
-      font-size:14px;
-    }
-    .card .bd{padding:14px}
+    .hd h2{margin:0; font-size:14px}
+    .bd{padding:12px}
 
-    .sub{
-      margin:0 0 10px;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.7;
-    }
-
-    .cmd{
-      margin:10px 0 0;
-      padding:12px 12px;
+    .steps{display:flex; flex-direction:column; gap:10px}
+    .stepBtn{
+      width:100%;
+      text-align:right;
       border:1px solid var(--line);
-      background:#fff;
-      border-radius:12px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-size:13px;
-      line-height:1.75;
-      color:var(--fixed); /* الافتراضي ثابت */
-      white-space:pre-wrap;
-      word-break:break-word;
-    }
-
-    .fix{color:var(--fixed); font-weight:700}
-    .var{color:var(--important); font-weight:800}
-    .note{
-      margin-top:12px;
+      border-radius: 14px;
       padding:12px 12px;
-      border:1px dashed var(--line);
-      border-radius:12px;
-      background:#fff;
-      color:#111;
-      font-size:13px;
-      line-height:1.8;
-      white-space:pre-wrap;
-      word-break:break-word;
+      background: #fff;
+      cursor:pointer;
+      transition: transform .12s ease, border-color .12s ease;
+      display:flex; gap:10px; align-items:flex-start;
     }
-    .k{font-weight:800; color:#000}
-    .r{color:var(--important); font-weight:800}
-    .b{color:var(--fixed); font-weight:800}
+    .stepBtn:hover{transform: translateY(-1px); border-color:#9ca3af}
+    .stepBtn.active{border-color: var(--fixed); outline:2px solid rgba(11,42,91,.12)}
+    .num{
+      min-width:30px; height:30px; border-radius:10px;
+      display:grid; place-items:center;
+      border:1px solid var(--line);
+      background: var(--panel);
+      color: var(--text);
+      font-weight:800;
+    }
+    .meta{display:flex; flex-direction:column; gap:4px}
+    .meta .t{font-weight:800; font-size:13px}
+    .meta .d{color:var(--muted); font-size:12px; line-height:1.55}
 
-    ul{margin:8px 0 0; padding:0 18px 0 0; color:#111; line-height:1.9}
+    .panelTitle{margin:0 0 6px; font-size:18px}
+    .panelSub{margin:0 0 12px; color:var(--muted); font-size:13px; line-height:1.7}
+
+    .sec{margin-top:12px; padding-top:12px; border-top:1px dashed var(--line)}
+    .sec h3{margin:0 0 10px; font-size:13px}
+    ul{margin:0; padding:0 18px 0 0; color:var(--muted); font-size:13px; line-height:1.8}
     li{margin:4px 0}
 
-    .two{
+    .code{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      overflow:hidden;
+    }
+    .code .top{
+      padding:10px 10px;
+      border-bottom:1px solid var(--line);
+      background: var(--panel);
+      font-size:12px;
+      color: var(--muted);
+      display:flex; justify-content:space-between; gap:10px; align-items:center;
+    }
+    pre{
+      margin:0;
+      padding:10px 12px;
+      white-space:pre-wrap;
+      word-break:break-word;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:12.5px;
+      line-height:1.8;
+      color: var(--text);
+    }
+
+    .fx{color: var(--fixed); font-weight:800}
+    .vr{color: var(--var); font-weight:900}
+
+    .mini{
       display:grid;
       grid-template-columns: 1fr;
       gap:10px;
     }
 
-    @media (min-width: 860px){
-      .two{grid-template-columns: 1fr 1fr}
+    .addons{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap:10px;
+    }
+    @media (max-width: 520px){ .addons{grid-template-columns:1fr} }
+    .addonBtn{
+      text-align:right;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 12px;
+      background:#fff;
+      cursor:pointer;
+      transition: transform .12s ease, border-color .12s ease;
+    }
+    .addonBtn:hover{transform: translateY(-1px); border-color:#9ca3af}
+    .addonBtn .h{font-weight:900; font-size:13px}
+    .addonBtn .s{color:var(--muted); font-size:12px; margin-top:6px; line-height:1.55}
+
+    dialog{
+      border:none;
+      border-radius: 16px;
+      background:#fff;
+      width:min(950px, 94vw);
+      box-shadow: var(--shadow);
+      padding:0;
+    }
+    dialog::backdrop{background: rgba(0,0,0,.35)}
+    .mhd{
+      padding:12px 12px;
+      border-bottom:1px solid var(--line);
+      background: var(--panel);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .mhd h3{margin:0; font-size:14px}
+    .mclose{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-size:12px;
+    }
+    .mbd{padding:12px}
+
+    .hint{
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      color: var(--muted);
+      font-size:12px;
+      line-height:1.8;
     }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <h1>خطوات الحجز</h1>
-      <p>المدخلات داخل <span class="r">""</span> متغيرة — باقي الأوامر ثابت.</p>
+      <div>
+        <h1>خطوات الحجز من البداية إلى النهاية</h1>
+        <p>
+          الثابت بالأزرق الغامق، والمتغير بالأحمر.
+        </p>
+      </div>
     </header>
 
     <div class="grid">
-      <!-- الخطوة 1 -->
+      <!-- القائمة -->
       <section class="card">
-        <div class="hd">
-          <div class="t">الخطوة الأولى: تحديد مواعيد الرحلة</div>
-        </div>
+        <div class="hd"><h2>خطوات الحجز</h2></div>
         <div class="bd">
-          <p class="sub">حدد التاريخ + مدينة الإقلاع + مدينة الوصول.</p>
-          <pre class="cmd"><span class="fix">AN</span> <span class="var">"10FEB"</span> <span class="var">"RUH"</span> <span class="var">"LHR"</span></pre>
-        </div>
-      </section>
+          <div class="steps" id="steps"></div>
 
-      <!-- الخطوة 2 -->
-      <section class="card">
-        <div class="hd">
-          <div class="t">الخطوة الثانية: تحديد الدرجة وعدد المقاعد والباقة</div>
-        </div>
-        <div class="bd">
-          <p class="sub">تسعير ثم اختيار الباقة.</p>
-          <pre class="cmd"><span class="fix">FXX</span>
-<span class="fix">FXX/FF-</span> <span class="var">الباقة اختيار</span></pre>
-        </div>
-      </section>
-
-      <!-- الخطوة 3 -->
-      <section class="card">
-        <div class="hd">
-          <div class="t">الخطوة الثالثة: إدخال الأسماء</div>
-        </div>
-        <div class="bd">
-          <p class="sub">اختر الصيغة حسب نوع المسافر.</p>
-
-          <div class="two">
-            <div>
-              <div class="k">ذكر</div>
-              <pre class="cmd"><span class="fix">NM1</span> <span class="var">"LAST NAME"</span>/<span class="var">"FIRST NAME"</span> <span class="fix">MR</span></pre>
-            </div>
-
-            <div>
-              <div class="k">أنثى</div>
-              <pre class="cmd"><span class="fix">NM1</span> <span class="var">"LAST NAME"</span>/<span class="var">"FIRST NAME"</span> <span class="fix">MS</span></pre>
-            </div>
-
-            <div>
-              <div class="k">طفل</div>
-              <pre class="cmd"><span class="fix">NM1</span> <span class="var">"LAST NAME"</span>/<span class="var">"FIRST NAME"</span> <span class="fix">MSTR</span> <span class="fix">(CHD/</span><span class="var">"BOD"</span><span class="fix">)</span></pre>
-            </div>
-
-            <div>
-              <div class="k">طفلة</div>
-              <pre class="cmd"><span class="fix">NM1</span> <span class="var">"LAST NAME"</span>/<span class="var">"FIRST NAME"</span> <span class="fix">MISS</span></pre>
-            </div>
-          </div>
-
-          <div style="margin-top:10px">
-            <div class="k">رضيع (يربط مع بالغ)</div>
-            <pre class="cmd"><span class="fix">NM1</span> <span class="var">"LAST NAME"</span>/<span class="var">"FIRST NAME"</span> <span class="fix">MS</span> <span class="fix">(INF</span><span class="var">"LAST NAME"</span>/<span class="var">"FIRST NAME"</span>/<span class="var">"DOB"</span><span class="fix">)</span></pre>
+          <div class="sec">
+            <h3>تنبيهات سريعة</h3>
+            <ul>
+              <li>إذا ظهرت: <span class="vr">NEED TICKETING ARGUMENTS</span> الحل: <span class="fx">TKOK</span></li>
+              <li>إذا ظهرت: <span class="vr">NEED TEST</span> الحل: <span class="fx">FXP</span></li>
+              <li>إذا ظهرت: <span class="vr">PREVIOUS TST EXISTS/SEGMENT OVERLAP</span> الحل: <span class="fx">TTE/ALL</span> ثم <span class="fx">TMX/ALL</span></li>
+              <li>إذا ظهرت: <span class="vr">TICKETING INHIBITED - SSR DOCS MISSING</span> لازم إضافة <span class="fx">SSR DOCS</span></li>
+              <li>بعد كل خطوة مهمة: <span class="fx">RFF</span> ثم <span class="fx">ER</span> ثم <span class="fx">ER</span></li>
+            </ul>
           </div>
         </div>
       </section>
 
-      <!-- الخطوة 4 -->
+      <!-- التفاصيل -->
       <section class="card">
-        <div class="hd">
-          <div class="t">الخطوة الرابعة: التواصل + الوثائق + الباقة + الدفع + التصدير</div>
-        </div>
-        <div class="bd">
-          <p class="sub">أدخل التواصل ثم وثائق السفر ثم أكمل الإجراءات.</p>
-
-          <pre class="cmd"><span class="fix">APM-SV/M+966</span><span class="var">"PHONENo"</span><span class="fix">/P</span><span class="var">"1,2,3,4"</span>
-<span class="fix">APN-SV/M+966</span><span class="var">"PHONENo"</span><span class="fix">/P</span><span class="var">"1,2,3,4"</span>
-<span class="fix">APE-</span><span class="var">"Email"</span>
-<span class="fix">TKOK</span>
-<span class="fix">RFF&gt;ER&gt;ER</span>
-
-<span class="fix">SR DOCS SV HK1-</span><span class="var">"I"</span><span class="fix">-</span><span class="var">"SAU"</span><span class="fix">-</span><span class="var">"1000000006"</span><span class="fix">-</span><span class="var">"SAU"</span><span class="fix">-</span><span class="var">"14SEP92"</span><span class="fix">-</span><span class="var">"M"</span><span class="fix">-</span><span class="var">"12DEC30"</span><span class="fix">-</span><span class="var">"LAST NAME"</span><span class="fix">/</span><span class="var">"FIRST NAME"</span><span class="fix">/P</span><span class="var">"1"</span>
-
-<span class="fix">اختيار الباقة -FF/FXP</span>
-<span class="fix">FP-SADAD</span>
-<span class="fix">RFF&gt;ER&gt;ER</span>
-<span class="fix">TTP/RT</span></pre>
-
-          <div class="note">
-<span class="k">تفصيل ترتيب SR DOCS:</span>
-SR DOCS SV HK1-"I"-"SAU"-"1000000006"-"SAU"-"14SEP92"-"M"-"12DEC30"-"LAST NAME"/"FIRST NAME"/P"1"
-                |    |        |         |        |      |     |                       |                           |
-                |    |             |           رقم المسافر           الأسم                                |     الجنس       |       بلد الإصدار
-                            |   تاريخ انتهاء الوثيقه     تاريخ الميلاد                       |       الجنسية
-                            |                رقم الوثيقة
-
-<span class="k">الوثيقة المستخدمة للسفر:</span>
-(<span class="b">I</span> = هوية وطنية) ، (<span class="b">A</span> = إقامة) ، (<span class="b">P</span> = جواز سفر)
-          </div>
+        <div class="hd"><h2 id="detailTitle">—</h2></div>
+        <div class="bd" id="detail">
+          <h2 class="panelTitle">اختر خطوة من اليسار</h2>
+          <p class="panelSub">—</p>
         </div>
       </section>
     </div>
+
+    <!-- الإضافات -->
+    <section class="card" style="margin-top:14px">
+      <div class="hd"><h2>الإضافات</h2></div>
+      <div class="bd">
+        <div class="addons" id="addons"></div>
+      </div>
+    </section>
   </div>
 
+  <dialog id="modal">
+    <div class="mhd">
+      <h3 id="mTitle">—</h3>
+      <button class="mclose" id="mClose" type="button">إغلاق</button>
+    </div>
+    <div class="mbd" id="mBody"></div>
+  </dialog>
+
   <script>
-    // منع التحديد/النسخ/القائمة
+    // منع النسخ/القص/الزر الأيمن/اختصارات شائعة
     document.addEventListener("contextmenu", e => e.preventDefault());
-
-    ["copy","cut","paste","dragstart","selectstart"].forEach(evt=>{
-      document.addEventListener(evt, e => e.preventDefault());
+    ["copy","cut","paste","selectstart","dragstart"].forEach(ev=>{
+      document.addEventListener(ev, e => e.preventDefault());
     });
-
     document.addEventListener("keydown", (e)=>{
       const k = (e.key || "").toLowerCase();
-      const ctrl = e.ctrlKey || e.metaKey;
-      if(ctrl && ["c","x","v","a","s","p","u"].includes(k)) e.preventDefault();
-      if(k === "f12") e.preventDefault();
-    }, {capture:true});
+      if ((e.ctrlKey || e.metaKey) && ["c","x","v","a","u","s","p"].includes(k)) e.preventDefault();
+      if (e.key === "F12") e.preventDefault();
+    });
+
+    const stepsData = [
+      {
+        title: "الخطوة الأولى: تحديد مواعيد الرحلة",
+        desc: "تحديد التاريخ + المدن.",
+        html: `
+          <h2 class="panelTitle">الخطوة الأولى: تحديد مواعيد الرحلة</h2>
+          <p class="panelSub">التاريخ + مدينة الإقلاع + مدينة الوصول.</p>
+          <div class="mini">
+            <div class="code">
+              <div class="top">الأمر</div>
+              <pre><span class="fx">AN</span> <span class="vr">10FEB</span> <span class="vr">RUH</span> <span class="vr">LHR</span></pre>
+            </div>
+            <div class="hint">
+              <b class="fx">ملاحظة:</b> الأشهر تُكتب باختصار إنجليزي (JAN/FEB/MAR...).
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "الخطوة الثانية: تحديد الدرجة وعدد المقاعد والباقة",
+        desc: "تسعير ثم اختيار الباقة.",
+        html: `
+          <h2 class="panelTitle">الخطوة الثانية: تحديد الدرجة وعدد المقاعد والباقة</h2>
+          <p class="panelSub">بعد اختيار الرحلة، يتم التسعير ثم اختيار الباقة.</p>
+          <div class="mini">
+            <div class="code">
+              <div class="top">التسعير</div>
+              <pre><span class="fx">FXX</span></pre>
+            </div>
+            <div class="code">
+              <div class="top">اختيار الباقة</div>
+              <pre><span class="fx">FXX/FF-</span> <span class="vr">اختيار_الباقة</span></pre>
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "الخطوة الثالثة: إضافة الأسماء",
+        desc: "ذكر / أنثى / طفل / طفلة / رضيع (يربط مع بالغ).",
+        html: `
+          <h2 class="panelTitle">الخطوة الثالثة: إضافة الأسماء</h2>
+          <p class="panelSub">اختر الصيغة المناسبة حسب نوع المسافر.</p>
+
+          <div class="sec">
+            <h3>ذكر</h3>
+            <div class="code"><div class="top">NM1</div>
+              <pre><span class="fx">NM1</span> <span class="vr">LASTNAME</span>/<span class="vr">FIRSTNAME</span> <span class="fx">MR</span></pre>
+            </div>
+          </div>
+
+          <div class="sec">
+            <h3>أنثى</h3>
+            <div class="code"><div class="top">NM1</div>
+              <pre><span class="fx">NM1</span> <span class="vr">LASTNAME</span>/<span class="vr">FIRSTNAME</span> <span class="fx">MS</span></pre>
+            </div>
+          </div>
+
+          <div class="sec">
+            <h3>طفل</h3>
+            <div class="code"><div class="top">NM1</div>
+              <pre><span class="fx">NM1</span> <span class="vr">LASTNAME</span>/<span class="vr">FIRSTNAME</span> <span class="fx">MSTR</span> (<span class="fx">CHD</span>/<span class="vr">DOB</span>)</pre>
+            </div>
+          </div>
+
+          <div class="sec">
+            <h3>طفلة</h3>
+            <div class="code"><div class="top">NM1</div>
+              <pre><span class="fx">NM1</span> <span class="vr">LASTNAME</span>/<span class="vr">FIRSTNAME</span> <span class="fx">MISS</span></pre>
+            </div>
+          </div>
+
+          <div class="sec">
+            <h3>رضيع (يربط مع بالغ)</h3>
+            <div class="code"><div class="top">NM1</div>
+              <pre><span class="fx">NM1</span> <span class="vr">LASTNAME</span>/<span class="vr">FIRSTNAME</span> <span class="fx">MS</span> (<span class="fx">INF</span><span class="vr">LASTNAME</span>/<span class="vr">FIRSTNAME</span>/<span class="vr">DOB</span>)</pre>
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "الخطوة الرابعة: التواصل + الوثائق + التثبيت + الدفع + التصدير",
+        desc: "بيانات التواصل ثم TKOK والحفظ ثم SSR DOCS ثم اختيار الباقة والدفع والتصدير.",
+        html: `
+          <h2 class="panelTitle">الخطوة الرابعة: التواصل + الوثائق + التثبيت + الدفع + التصدير</h2>
+          <p class="panelSub">رتّبها بنفس التسلسل التالي.</p>
+
+          <div class="sec">
+            <h3>بيانات التواصل</h3>
+            <div class="code"><div class="top">APM / APN / APE</div>
+              <pre>
+<span class="fx">APM-SV/M+966</span><span class="vr">PHONENO</span><span class="fx">/P</span><span class="vr">1,2,3,4</span>
+<span class="fx">APN-SV/M+966</span><span class="vr">PHONENO</span><span class="fx">/P</span><span class="vr">1,2,3,4</span>
+<span class="fx">APE-</span><span class="vr">EMAIL</span>
+              </pre>
+            </div>
+
+            <div class="code" style="margin-top:10px"><div class="top">TKOK + حفظ</div>
+              <pre>
+<span class="fx">TKOK</span>
+<span class="fx">RFF</span> &gt; <span class="fx">ER</span> &gt; <span class="fx">ER</span>
+              </pre>
+            </div>
+          </div>
+
+          <div class="sec">
+            <h3>وثائق السفر (SSR DOCS)</h3>
+            <div class="code"><div class="top">SR DOCS</div>
+              <pre>
+<span class="fx">SR DOCS SV HK1-</span><span class="vr">I</span><span class="fx">-</span><span class="vr">SAU</span><span class="fx">-</span><span class="vr">1000000006</span><span class="fx">-</span><span class="vr">SAU</span><span class="fx">-</span><span class="vr">14SEP92</span><span class="fx">-</span><span class="vr">M</span><span class="fx">-</span><span class="vr">12DEC30</span><span class="fx">-</span><span class="vr">LASTNAME</span>/<span class="vr">FIRSTNAME</span><span class="fx">/P</span><span class="vr">1</span>
+
+| |   |        |         |        |       |       |              |                    |
+| |   |        |         |        |       |       |              |                    |
+| |   |        |         |        |       |       |              |                    |
+نوع الوثيقة  بلد الإصدار  رقم الوثيقة  الجنسية  تاريخ الميلاد  الجنس  تاريخ الانتهاء   الاسم      رقم المسافر
+              </pre>
+            </div>
+
+            <div class="hint" style="margin-top:10px">
+              <b class="fx">نوع الوثيقة المستخدمه للسفر:</b>
+              <span class="vr">I</span>=هوية وطنية ، <span class="vr">A</span>=إقامة ، <span class="vr">P</span>=جواز سفر
+            </div>
+          </div>
+
+          <div class="sec">
+            <h3>تثبيت السعر + اختيار الباقة</h3>
+            <div class="code"><div class="top">FXP</div>
+              <pre><span class="fx">FXP</span></pre>
+            </div>
+            <div class="code" style="margin-top:10px"><div class="top">اختيار الباقة</div>
+              <pre><span class="fx">FXP/FF-</span> <span class="vr">اختيار_الباقة</span></pre>
+            </div>
+          </div>
+
+          <div class="sec">
+            <h3>الدفع + الحفظ + التصدير</h3>
+            <div class="code"><div class="top">FP + حفظ</div>
+              <pre>
+<span class="fx">FP-SADAD</span>
+<span class="fx">RFF</span> &gt; <span class="fx">ER</span> &gt; <span class="fx">ER</span>
+              </pre>
+            </div>
+            <div class="code" style="margin-top:10px"><div class="top">التصدير</div>
+              <pre><span class="fx">TTP/RT</span></pre>
+            </div>
+          </div>
+        `
+      }
+    ];
+
+    const addOns = [
+      {
+        title: "خدمات مجانية",
+        short: "كرسي متحرك / سرير رضيع / كفيف / أصم",
+        html: `
+          <h2 class="panelTitle">الخدمات المجانية</h2>
+          <p class="panelSub">تضاف على الرحلة المطلوبة ورقم المسافر.</p>
+          <div class="code"><div class="top">أوامر</div><pre>
+<span class="fx">SR WCHR/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">SR WCHS/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">SR WCHC/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">SR BSCT/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">SR BLND/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">SR DEAF/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">RFF</span> &gt; <span class="fx">ER</span> &gt; <span class="fx">ER</span>
+          </pre></div>
+        `
+      },
+      {
+        title: "الوجبات",
+        short: "استعراض ثم إضافة كود الوجبة",
+        html: `
+          <h2 class="panelTitle">الوجبات</h2>
+          <p class="panelSub">استعرض القائمة ثم أضف كود الوجبة.</p>
+          <div class="code"><div class="top">أوامر</div><pre>
+<span class="fx">HE MEAL</span>
+<span class="fx">MS22</span>
+<span class="fx">SR</span> <span class="vr">MEALCODE</span><span class="fx">/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">RFF</span> &gt; <span class="fx">ER</span> &gt; <span class="fx">ER</span>
+          </pre></div>
+        `
+      },
+      {
+        title: "حقيبة مدفوعة (XBAG)",
+        short: "SR XBAG ثم خدمات ثم دفع بطاقة ثم TTM/RT",
+        html: `
+          <h2 class="panelTitle">حقيبة مدفوعة (XBAG)</h2>
+          <div class="code"><div class="top">أوامر</div><pre>
+<span class="fx">SR XBAG NN</span> <span class="vr">1</span><span class="fx">-TTL0KG1PC/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">TTE/ALL</span>
+<span class="fx">TMX/ALL</span>
+<span class="fx">RTG</span>
+<span class="fx">FXG/L</span> <span class="vr">#</span>
+<span class="fx">TMI/ALL/FP-CC</span><span class="vr">########</span>
+<span class="fx">RFF</span> &gt; <span class="fx">ER</span> &gt; <span class="fx">ER</span>
+<span class="fx">TTM/RT</span>
+          </pre></div>
+        `
+      },
+      {
+        title: "مقعد مدفوع (SEAT)",
+        short: "SM ثم خدمات ثم دفع بطاقة ثم TTM/RT",
+        html: `
+          <h2 class="panelTitle">مقعد مدفوع (SEAT)</h2>
+          <div class="code"><div class="top">أوامر</div><pre>
+<span class="fx">SM</span>
+<span class="fx">TTE/ALL</span>
+<span class="fx">TMX/ALL</span>
+<span class="fx">RTG</span>
+<span class="fx">FXG/L</span> <span class="vr">#</span>
+<span class="fx">TMI/ALL/FP-CC</span><span class="vr">########</span>
+<span class="fx">RFF</span> &gt; <span class="fx">ER</span> &gt; <span class="fx">ER</span>
+<span class="fx">TTM/RT</span>
+          </pre></div>
+        `
+      }
+    ];
+
+    const stepsEl = document.getElementById("steps");
+    const detailTitle = document.getElementById("detailTitle");
+    const detailEl = document.getElementById("detail");
+
+    function renderSteps(){
+      stepsEl.innerHTML = "";
+      stepsData.forEach((s, idx)=>{
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "stepBtn";
+        b.dataset.idx = idx;
+        b.innerHTML = `
+          <div class="num">${idx+1}</div>
+          <div class="meta">
+            <div class="t">${s.title}</div>
+            <div class="d">${s.desc}</div>
+          </div>
+        `;
+        b.addEventListener("click", ()=>selectStep(idx));
+        stepsEl.appendChild(b);
+      });
+      selectStep(0);
+    }
+
+    function selectStep(idx){
+      document.querySelectorAll(".stepBtn").forEach(x=>{
+        x.classList.toggle("active", Number(x.dataset.idx) === idx);
+      });
+      const s = stepsData[idx];
+      detailTitle.textContent = s.title;
+      detailEl.innerHTML = s.html;
+    }
+
+    // Addons modal
+    const addonsEl = document.getElementById("addons");
+    const modal = document.getElementById("modal");
+    const mTitle = document.getElementById("mTitle");
+    const mBody = document.getElementById("mBody");
+    document.getElementById("mClose").addEventListener("click", ()=>modal.close());
+
+    function openAddon(i){
+      const a = addOns[i];
+      mTitle.textContent = a.title;
+      mBody.innerHTML = a.html;
+      modal.showModal();
+    }
+
+    function renderAddons(){
+      addonsEl.innerHTML = "";
+      addOns.forEach((a, i)=>{
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "addonBtn";
+        b.innerHTML = `<div class="h">${a.title}</div><div class="s">${a.short}</div>`;
+        b.addEventListener("click", ()=>openAddon(i));
+        addonsEl.appendChild(b);
+      });
+    }
+
+    renderSteps();
+    renderAddons();
   </script>
 </body>
 </html>
 ```
+
+تم إدراج “تنبيهات الأخطاء السريعة” (TKOK/FXP/TTE/ TMX/SSR DOCS) حسب مرجع الأخطاء. 
