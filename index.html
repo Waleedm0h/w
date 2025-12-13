@@ -1,0 +1,851 @@
+استبدل `index.html` في مستودع الصفحة `w` بهذا الملف (محتوى الخطوات/الأوامر مبني على ملفات التدريب: خطوات الحجز العامة【】، TKOK والحفظ والتسعير والدفع والتصدير【】【】، الإضافات المجانية/المدفوعة【】، وأخطاء شائعة مثل SSR DOCS / FXP / TKOK【】【】، وقراءات التذكرة/القسيمة/PNR【】【】).
+
+```html
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>خطوات الحجز - أماديوس (SV)</title>
+  <style>
+    :root{
+      --bg:#0b1220; --panel:#0f1a30; --panel2:#0c1528; --text:#e7eefc; --muted:#a9b6d3;
+      --line:#253555; --brand:#22c55e; --brand2:#16a34a; --warn:#f59e0b; --danger:#ef4444;
+      --code:#0a1020;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial;
+      background: radial-gradient(1200px 700px at 20% 10%, rgba(34,197,94,.18), transparent 50%),
+                  radial-gradient(900px 650px at 90% 0%, rgba(59,130,246,.14), transparent 50%),
+                  var(--bg);
+      color:var(--text);
+    }
+    a{color:inherit}
+    .wrap{max-width:1200px; margin:0 auto; padding:24px}
+    header{
+      display:flex; gap:14px; align-items:center; justify-content:space-between;
+      background: linear-gradient(90deg, rgba(34,197,94,.18), rgba(34,197,94,.06) 45%, rgba(59,130,246,.06));
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      padding:18px 18px;
+      box-shadow: var(--shadow);
+    }
+    .title{
+      display:flex; flex-direction:column; gap:6px;
+    }
+    .title h1{margin:0; font-size:20px}
+    .title p{margin:0; color:var(--muted); font-size:13px; line-height:1.5}
+    .pillrow{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-start}
+    .pill{
+      padding:8px 10px; border-radius:999px; border:1px solid var(--line);
+      background: rgba(255,255,255,.04); color:var(--muted); font-size:12px;
+      display:flex; gap:8px; align-items:center;
+    }
+    .pill b{color:var(--text)}
+    .grid{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns: 340px 1fr;
+      gap:16px;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr}
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:14px 14px;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      background: rgba(0,0,0,.12);
+    }
+    .card .hd h2{margin:0; font-size:14px}
+    .card .bd{padding:14px}
+    .search{
+      width:100%;
+      background: rgba(0,0,0,.18);
+      border:1px solid var(--line);
+      color:var(--text);
+      border-radius: 12px;
+      padding:10px 12px;
+      outline:none;
+    }
+    .search::placeholder{color: rgba(231,238,252,.55)}
+    .steps{
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .stepBtn{
+      width:100%;
+      text-align:right;
+      background: rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      border-radius: 14px;
+      padding:12px 12px;
+      color:var(--text);
+      cursor:pointer;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      display:flex; gap:10px; align-items:flex-start;
+    }
+    .stepBtn:hover{transform: translateY(-1px); border-color: rgba(34,197,94,.5)}
+    .stepBtn.active{
+      background: rgba(34,197,94,.10);
+      border-color: rgba(34,197,94,.6);
+    }
+    .num{
+      min-width:30px; height:30px; border-radius:10px;
+      display:grid; place-items:center;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      color: rgba(231,238,252,.9);
+      font-weight:700;
+    }
+    .stepMeta{display:flex; flex-direction:column; gap:4px}
+    .stepMeta .t{font-weight:700; font-size:13px}
+    .stepMeta .d{color:var(--muted); font-size:12px; line-height:1.45}
+    .badges{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .badge{
+      font-size:12px; padding:6px 10px; border-radius:999px;
+      border:1px solid var(--line); background: rgba(255,255,255,.03); color:var(--muted);
+    }
+    .badge.ok{border-color: rgba(34,197,94,.5); color: rgba(34,197,94,.95); background: rgba(34,197,94,.08)}
+    .badge.warn{border-color: rgba(245,158,11,.55); color: rgba(245,158,11,.95); background: rgba(245,158,11,.08)}
+    .badge.danger{border-color: rgba(239,68,68,.55); color: rgba(239,68,68,.95); background: rgba(239,68,68,.08)}
+    .panelTitle{margin:0 0 6px; font-size:18px}
+    .panelSub{margin:0 0 14px; color:var(--muted); font-size:13px; line-height:1.6}
+    .sec{
+      margin-top:12px;
+      border-top:1px dashed rgba(37,53,85,.9);
+      padding-top:12px;
+    }
+    .sec h3{margin:0 0 8px; font-size:13px; color: rgba(231,238,252,.92)}
+    .list{margin:0; padding:0 18px 0 0; color:var(--muted); font-size:13px; line-height:1.7}
+    .list li{margin:4px 0}
+    .cmds{display:flex; flex-direction:column; gap:10px; margin-top:10px}
+    .cmd{
+      background: var(--code);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      overflow:hidden;
+    }
+    .cmd .top{
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      padding:10px 10px;
+      background: rgba(255,255,255,.02);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .cmd .label{font-size:12px; color: rgba(231,238,252,.88)}
+    .cmd pre{
+      margin:0; padding:10px 12px; white-space:pre-wrap; word-break:break-word;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:12px; color: rgba(231,238,252,.92);
+    }
+    .btn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      padding:8px 10px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-size:12px;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      user-select:none;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(34,197,94,.55); background: rgba(34,197,94,.08)}
+    .btn.brand{border-color: rgba(34,197,94,.55); background: rgba(34,197,94,.12)}
+    .btn.ghost:hover{border-color: rgba(59,130,246,.55); background: rgba(59,130,246,.10)}
+    .addonGrid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap:10px;
+    }
+    @media (max-width: 520px){
+      .addonGrid{grid-template-columns:1fr}
+    }
+    .addonBtn{
+      text-align:right;
+      padding:12px 12px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      cursor:pointer;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+    }
+    .addonBtn:hover{transform: translateY(-1px); border-color: rgba(34,197,94,.5)}
+    .addonBtn .h{font-weight:800; font-size:13px}
+    .addonBtn .s{color:var(--muted); font-size:12px; margin-top:4px; line-height:1.45}
+    .footer{
+      margin-top:16px;
+      color: rgba(231,238,252,.55);
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    dialog{
+      border:none;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(15,26,48,.98), rgba(12,21,40,.98));
+      color:var(--text);
+      width:min(900px, 92vw);
+      box-shadow: var(--shadow);
+      padding:0;
+    }
+    dialog::backdrop{background: rgba(0,0,0,.65)}
+    .modalHd{
+      padding:14px 14px;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      background: rgba(0,0,0,.18);
+    }
+    .modalHd h3{margin:0; font-size:14px}
+    .modalBd{padding:14px}
+    .closeBtn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      border-radius: 12px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-size:12px;
+    }
+    .toast{
+      position:fixed;
+      left:18px; bottom:18px;
+      background: rgba(34,197,94,.16);
+      border:1px solid rgba(34,197,94,.45);
+      color: rgba(231,238,252,.95);
+      padding:10px 12px;
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      font-size:12px;
+      display:none;
+      max-width: min(520px, 92vw);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>خطوات الحجز من البداية إلى النهاية</h1>
+        <p>
+          صفحة واحدة: خطوات الحجز + أزرار الإضافات (مجانية/مدفوعة) تعرض الطريقة والأوامر مع زر نسخ.
+        </p>
+      </div>
+      <div class="pillrow">
+        <div class="pill">رسوم خدمة (داخلي) <b>50</b></div>
+        <div class="pill">رسوم خدمة (دولي) <b>100</b></div>
+        <div class="pill"><span style="color:var(--warn);font-weight:700">تنبيه</span> الخدمات المدفوعة غير مستردة ولا تقبل التعديل</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Left: Step list -->
+      <section class="card">
+        <div class="hd">
+          <h2>خطوات الحجز</h2>
+          <button class="btn ghost" id="expandAllBtn" type="button">عرض كل الأوامر</button>
+        </div>
+        <div class="bd">
+          <input id="q" class="search" placeholder="ابحث داخل الخطوات / الأوامر (مثال: FXP, TKOK, SADAD, TTP)" />
+          <div style="height:12px"></div>
+          <div class="steps" id="steps"></div>
+
+          <div class="sec">
+            <h3>ملاحظات سريعة</h3>
+            <ul class="list">
+              <li>قبل المتابعة: تأكد أن حالة الرحلات مؤكدة (HK) وليست انتظار (HL). HL لا يتم الحجز عليها من خلال المركز.</li>
+              <li>إذا طلع: <b style="color:var(--danger)">NEED TICKETING ARGUMENTS</b> الحل = <b>TKOK</b>.</li>
+              <li>إذا طلع: <b style="color:var(--danger)">NEED TEST</b> الحل = <b>FXP</b>.</li>
+              <li>إذا طلع: <b style="color:var(--danger)">PREVIOUS TST EXISTS/SEGMENT OVERLAP</b> الحل = <b>TTE/ALL</b> ثم <b>TMX/ALL</b>.</li>
+              <li>إذا طلع: <b style="color:var(--danger)">TICKETING INHIBITED - SSR DOCS MISSING</b> لازم تضيف وثائق السفر (SSR DOCS).</li>
+              <li>بعد كل خطوة مهمة: <b>RFF</b> ثم <b>ER</b> ثم <b>ER</b>.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Step details + add-ons -->
+      <section class="card">
+        <div class="hd">
+          <h2 id="detailTitle">—</h2>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-start">
+            <button class="btn brand" id="copyStepBtn" type="button">نسخ أوامر الخطوة</button>
+            <button class="btn" id="openAddonsBtn" type="button">الإضافات</button>
+          </div>
+        </div>
+        <div class="bd">
+          <h2 class="panelTitle" id="detailH">اختر خطوة من اليسار</h2>
+          <p class="panelSub" id="detailP">—</p>
+
+          <div class="badges" id="detailBadges"></div>
+
+          <div class="sec" id="detailChecklistSec" style="display:none">
+            <h3>المطلوب إنجازه</h3>
+            <ul class="list" id="detailChecklist"></ul>
+          </div>
+
+          <div class="sec" id="detailCmdSec" style="display:none">
+            <h3>الأوامر</h3>
+            <div class="cmds" id="detailCmds"></div>
+          </div>
+
+          <div class="sec">
+            <h3>الإضافات (أزرار)</h3>
+            <div class="addonGrid" id="addonGrid"></div>
+            <div class="footer">
+              * الخدمات المدفوعة: غير مستردة ولا تقبل التعديل.<br>
+              * الحقائب (XBAG): لا يمكن إضافتها على طيران آخر (يتم توجيه الضيف للمطار)، ويسمح حتى 4 حقائب لكل شخص.
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <dialog id="modal">
+    <div class="modalHd">
+      <h3 id="modalTitle">—</h3>
+      <div style="display:flex; gap:8px; flex-wrap:wrap">
+        <button class="btn brand" id="copyModalBtn" type="button">نسخ كل الأوامر</button>
+        <button class="closeBtn" id="closeModalBtn" type="button">إغلاق</button>
+      </div>
+    </div>
+    <div class="modalBd">
+      <p class="panelSub" id="modalDesc" style="margin-top:0">—</p>
+      <div class="badges" id="modalBadges"></div>
+
+      <div class="sec" id="modalChecklistSec" style="display:none">
+        <h3>الخطوات</h3>
+        <ul class="list" id="modalChecklist"></ul>
+      </div>
+
+      <div class="sec" id="modalCmdSec" style="display:none">
+        <h3>الأوامر</h3>
+        <div class="cmds" id="modalCmds"></div>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast">تم النسخ</div>
+
+  <script>
+    const stepsData = [
+      {
+        id: "s1",
+        title: "1) إنشاء الحجز + اختيار الرحلات",
+        desc: "أنشئ الحجز، استعرض معلومات الرحلة، حدّد الدرجة، واختر عدد المقاعد. تأكد أن الحالة مؤكدة (HK) وليست انتظار (HL).",
+        badges: [
+          {t:"تأكد من HK", v:"ok"},
+          {t:"تجنب HL", v:"danger"}
+        ],
+        checklist: [
+          "إنشاء حجز",
+          "استعراض إمكانيات/معلومات الرحلة",
+          "تحديد الدرجة",
+          "اختيار عدد المقاعد",
+          "التأكد من أن الرحلات مؤكدة وليست انتظار"
+        ],
+        commands: []
+      },
+      {
+        id: "s2",
+        title: "2) إضافة بيانات التواصل",
+        desc: "أضف رقم الجوال واللغة، ثم البريد الإلكتروني.",
+        badges: [{t:"Contacts", v:"ok"}],
+        checklist: [
+          "APN للرسائل (جوال)",
+          "APM للواتساب/التواصل (جوال)",
+          "APE للبريد"
+        ],
+        commands: [
+          {label:"APN", text:"APN-SV/M+96600000000/AR/P1"},
+          {label:"APM", text:"APM-SV/M+96600000000/AR/P1"},
+          {label:"APE", text:"APE-ZZTEST@GMAIL.COM"}
+        ]
+      },
+      {
+        id: "s3",
+        title: "3) TKOK ثم الحفظ",
+        desc: "بعد بيانات التواصل لازم TKOK ثم حفظ RFF ثم ER ثم ER.",
+        badges: [{t:"إلزامي", v:"warn"}],
+        checklist: [
+          "TKOK (ترتيب الحجز/التذاكر)",
+          "RFF ثم ER ثم ER"
+        ],
+        commands: [
+          {label:"ترتيب", text:"TKOK"},
+          {label:"حفظ", text:"RFF\nER\nER"}
+        ]
+      },
+      {
+        id: "s4",
+        title: "4) وثائق السفر (SSR DOCS)",
+        desc: "بدون وثائق السفر قد يظهر TICKETING INHIBITED - SSR DOCS MISSING. أضف الوثائق ثم احفظ.",
+        badges: [{t:"بدونها ما يصدر", v:"danger"}],
+        checklist: [
+          "إضافة وثائق السفر (SSR DOCS) لكل مسافر",
+          "استعراض وثائق السفر عند الحاجة"
+        ],
+        commands: [
+          {label:"استعراض وثائق السفر", text:"RHG"},
+          {label:"حفظ", text:"RFF\nER\nER"}
+        ]
+      },
+      {
+        id: "s5",
+        title: "5) تثبيت السعر/التسعير + اختيار الباقة",
+        desc: "بعد الوثائق والحفظ ثبّت السعر بـ FXP ثم اختر الباقة (FXP/FF-).",
+        badges: [{t:"FXP", v:"ok"}, {t:"اختيار باقة", v:"ok"}],
+        checklist: [
+          "FXP لتثبيت السعر",
+          "FXP/FF- لاختيار الباقة المتفق عليها"
+        ],
+        commands: [
+          {label:"تثبيت السعر", text:"FXP"},
+          {label:"اختيار الباقة", text:"FXP/FF-"}
+        ]
+      },
+      {
+        id: "s6",
+        title: "6) وسيلة الدفع (سداد)",
+        desc: "وسيلة الدفع المستخدمة للحجوزات الكاش المبدئية: سداد.",
+        badges: [{t:"FP SADAD", v:"ok"}],
+        checklist: [
+          "إضافة وسيلة الدفع",
+          "الحفظ بعد الدفع"
+        ],
+        commands: [
+          {label:"الدفع", text:"FP SADAD"},
+          {label:"حفظ", text:"RFF\nER\nER"}
+        ]
+      },
+      {
+        id: "s7",
+        title: "7) التصدير + إبلاغ الضيف بفاتورة سداد",
+        desc: "بعد إتمام البيانات: TTP/RT للتصدير، ثم RTO لإظهار/إبلاغ فاتورة سداد.",
+        badges: [{t:"TTP/RT", v:"ok"}, {t:"RTO", v:"ok"}],
+        checklist: [
+          "تصدير الحجز",
+          "إظهار فاتورة سداد للضيف"
+        ],
+        commands: [
+          {label:"تصدير", text:"TTP/RT"},
+          {label:"فاتورة سداد", text:"RTO"}
+        ]
+      },
+      {
+        id: "s8",
+        title: "8) قراءات سريعة بعد التصدير (PNR / تذكرة / قسيمة)",
+        desc: "استعراض الحجز/التذكرة/القسيمة وأهم شاشات التحقق.",
+        badges: [{t:"قراءات", v:"ok"}],
+        checklist: [
+          "RT للحجز",
+          "TWD للتذكرة",
+          "EWD للقسيمة (EMD)",
+          "RTF لعرض التذاكر/القسائم المرتبطة",
+          "TDD للتأكد من ربط التذاكر"
+        ],
+        commands: [
+          {label:"PNR", text:"RT ###########"},
+          {label:"PNR بالتذكرة", text:"RT TKT / 065-2###"},
+          {label:"التذكرة", text:"TWD / TKT 065-2##"},
+          {label:"القسيمة (EMD)", text:"EWD / EMD 065-4##"},
+          {label:"من داخل التذكرة", text:"RT*E"},
+          {label:"عرض التذاكر/القسائم", text:"RTF"},
+          {label:"تاريخ تحديثات الحجز", text:"RHI"},
+          {label:"سجل الدفع", text:"RHF"},
+          {label:"التأكد من الربط", text:"TDD"}
+        ]
+      }
+    ];
+
+    const addOns = [
+      {
+        id:"a_free",
+        title:"الخدمات المجانية",
+        short:"WCHR/WCHS/WCHC + خدمات خاصة",
+        desc:"تضاف على حجز مبدئي أو مدفوع. استخدم S# لرقم الرحلة داخل الحجز و P# لرقم المسافر.",
+        badges:[{t:"مجاني", v:"ok"}],
+        checklist:[
+          "حدد S# و P#",
+          "أضف الخدمة المطلوبة",
+          "احفظ بعد الإضافة"
+        ],
+        commands:[
+          {label:"كرسي متحرك للصالة", text:"SR WCHR/S#/P#"},
+          {label:"كرسي متحرك للدرج", text:"SR WCHS/S#/P#"},
+          {label:"كرسي متحرك للمقصورة (مع مرافق)", text:"SR WCHC/S#/P#"},
+          {label:"سرير رضيع", text:"SR BSCT/S#/P#"},
+          {label:"مسافر كفيف", text:"SR BLND/S#/P#"},
+          {label:"مسافر أصم", text:"SR DEAF/S#/P#"},
+          {label:"حامل/معاق/كبار سن", text:"SR MASSELEDERLYMAN/S#/P#"},
+          {label:"حفظ", text:"RFF\nER\nER"}
+        ]
+      },
+      {
+        id:"a_meal",
+        title:"الوجبات",
+        short:"HE MEAL / MS22 + SR كود الوجبة",
+        desc:"استعراض الوجبات ثم اختيار كود الوجبة وإضافته كـ SR على نفس S#/P#.",
+        badges:[{t:"وجبات", v:"ok"}],
+        checklist:[
+          "استعرض قائمة الوجبات",
+          "اختر كود الوجبة",
+          "أضفها على S#/P# ثم احفظ"
+        ],
+        commands:[
+          {label:"استعراض الوجبات", text:"HE MEAL > MS22"},
+          {label:"إضافة الوجبة", text:"SR <MEALCODE>/S#/P#"},
+          {label:"حفظ", text:"RFF\nER\nER"}
+        ]
+      },
+      {
+        id:"a_xbag",
+        title:"إضافة حقيبة مدفوعة (XBAG)",
+        short:"SR XBAG + تنظيف + RTG + FXG/L# + TMI + TTM/RT",
+        desc:"الخدمات المدفوعة غير مستردة ولا تقبل التعديل. لا يمكن إضافة حقائب على طيران آخر (يوجه للمطار). الحد: 4 حقائب لكل شخص.",
+        badges:[
+          {t:"مدفوع", v:"warn"},
+          {t:"غير مسترد", v:"danger"},
+          {t:"لا يقبل تعديل", v:"danger"}
+        ],
+        checklist:[
+          "أضف SR XBAG على S#/P#",
+          "نظّف التسعيرات القديمة (TTE/ALL + TMX/ALL)",
+          "افتح قائمة الخدمات (RTG)",
+          "ثبّت اختيار الخدمة (FXG/L#)",
+          "ادفع بالبطاقة (TMI/ALL/FP-CC)",
+          "احفظ ثم صدّر (TTM/RT)"
+        ],
+        commands:[
+          {label:"إضافة حقيبة", text:"SR XBAG NN <عدد الحقائب> -TTL0KG1PC/S#/P#"},
+          {label:"تنظيف تسعيرات", text:"TTE/ALL\nTMX/ALL"},
+          {label:"فتح الخدمات", text:"RTG"},
+          {label:"تثبيت الخدمة", text:"FXG/L #"},
+          {label:"الدفع (بطاقة)", text:"TMI/ALL/FP-CC#########"},
+          {label:"حفظ", text:"RFF\nER\nER"},
+          {label:"تصدير", text:"TTM/RT"}
+        ]
+      },
+      {
+        id:"a_seat",
+        title:"اختيار مقعد مدفوع (SEAT)",
+        short:"SM + تنظيف + RTG + FXG/L# + TMI + TTM/RT",
+        desc:"الخدمات المدفوعة غير مستردة ولا تقبل التعديل. بعد اختيار المقعد (SM) كمل نفس سلسلة الخدمات.",
+        badges:[
+          {t:"مدفوع", v:"warn"},
+          {t:"غير مسترد", v:"danger"},
+          {t:"لا يقبل تعديل", v:"danger"}
+        ],
+        checklist:[
+          "اختر المقعد (SM)",
+          "نظّف التسعيرات القديمة (TTE/ALL + TMX/ALL)",
+          "افتح قائمة الخدمات (RTG)",
+          "ثبّت اختيار الخدمة (FXG/L#)",
+          "ادفع بالبطاقة (TMI/ALL/FP-CC)",
+          "احفظ ثم صدّر (TTM/RT)"
+        ],
+        commands:[
+          {label:"اختيار مقعد", text:"SM"},
+          {label:"تنظيف تسعيرات", text:"TTE/ALL\nTMX/ALL"},
+          {label:"فتح الخدمات", text:"RTG"},
+          {label:"تثبيت الخدمة", text:"FXG/L #"},
+          {label:"الدفع (بطاقة)", text:"TMI/ALL/FP-CC#########"},
+          {label:"حفظ", text:"RFF\nER\nER"},
+          {label:"تصدير", text:"TTM/RT"}
+        ]
+      },
+      {
+        id:"a_chd",
+        title:"ربط طفل بحجز قائم (WITH FAMILY)",
+        short:"AN + FXX/RCHD + NM1 + AP + TKOK + DOCS + FXP + SADAD + TTP/RT",
+        desc:"عند رغبة الضيف بإضافة طفل أقل من 12 سنة على حجز قائم: تعمل حجز بنفس رحلات البالغ ووسيلة الدفع سداد فقط + ملاحظة RM WITH FAMILY.",
+        badges:[{t:"CHD", v:"ok"}, {t:"SADAD فقط", v:"warn"}],
+        checklist:[
+          "AN ثم التسعير للطفل FXX/RCHD",
+          "إضافة اسم الطفل NM1 (CHD/DATE)",
+          "إضافة تواصل APN/APM/APE",
+          "TKOK ثم حفظ",
+          "إضافة وثائق السفر (SR DOCS)",
+          "FXP ثم FXP/FF- لاختيار الباقة",
+          "FP-SADAD + ملاحظة RM*** WITH FAMILY -PNR- ***",
+          "حفظ ثم TTP/RT"
+        ],
+        commands:[
+          {label:"بحث", text:"AN"},
+          {label:"تسعير طفل", text:"FXX/RCHD\nFXX/RCHD/FF-"},
+          {label:"اسم الطفل", text:"NM1 LASTNAME/FIRSTNAME (CHD/DATE)"},
+          {label:"تواصل", text:"APM-SV/M+966###\nAPN-SV/M+966###\nAPE-####"},
+          {label:"ترتيب + حفظ", text:"TKOK\nRFF\nER\nER"},
+          {label:"وثائق السفر", text:"SR DOCS SV HK1-…………"},
+          {label:"تثبيت + باقة", text:"FXP\nFXP/FF-"},
+          {label:"دفع سداد", text:"FP-SADAD"},
+          {label:"ملاحظة ربط", text:"RM*** WITH FAMILY -PNR- ***"},
+          {label:"حفظ + تصدير", text:"RFF\nER\nER\nTTP/RT"}
+        ]
+      },
+      {
+        id:"a_inf",
+        title:"إضافة رضيع على حجز قائم",
+        short:"TTE/ALL + TMX/ALL + FXP/RINF + FP INF CC + TQO + TTP/T#/RT",
+        desc:"إضافة الرضيع على حجز قائم: الدفع يكون دائمًا ببطاقة بنكية، ثم TQO وبعدها TTP/T#/RT.",
+        badges:[{t:"INF", v:"ok"}, {t:"بطاقة فقط", v:"warn"}],
+        checklist:[
+          "تنظيف التسعيرات (TTE/ALL + TMX/ALL)",
+          "تثبيت تسعير الرضيع (FXP/RINF)",
+          "الدفع (FP INF CC)",
+          "حفظ",
+          "TQO ثم TTP/T#/RT"
+        ],
+        commands:[
+          {label:"تنظيف", text:"TTE/ALL\nTMX/ALL"},
+          {label:"تسعير رضيع", text:"FXP/RINF"},
+          {label:"الدفع", text:"FP INF CC"},
+          {label:"حفظ", text:"RFF\nER\nER"},
+          {label:"ما بعد الدفع", text:"TQO\nTTP/T#/RT"}
+        ]
+      }
+    ];
+
+    const $ = (id)=>document.getElementById(id);
+    const toast = $("toast");
+    let toastTimer = null;
+
+    function showToast(msg="تم النسخ"){
+      toast.textContent = msg;
+      toast.style.display = "block";
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(()=> toast.style.display="none", 1400);
+    }
+
+    async function copyText(t){
+      try{
+        await navigator.clipboard.writeText(t);
+        showToast("تم النسخ");
+      }catch(e){
+        // fallback
+        const ta = document.createElement("textarea");
+        ta.value = t;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        showToast("تم النسخ");
+      }
+    }
+
+    function normalize(s){
+      return (s||"").toString().toLowerCase().replace(/\s+/g," ").trim();
+    }
+
+    function renderSteps(filter=""){
+      const wrap = $("steps");
+      wrap.innerHTML = "";
+      const f = normalize(filter);
+      const items = stepsData.filter(x=>{
+        if(!f) return true;
+        const blob = [x.title, x.desc, ...(x.commands||[]).map(c=>c.text), ...(x.checklist||[])].join(" ");
+        return normalize(blob).includes(f);
+      });
+
+      items.forEach((s, idx)=>{
+        const btn = document.createElement("button");
+        btn.className = "stepBtn";
+        btn.type = "button";
+        btn.dataset.id = s.id;
+        btn.innerHTML = `
+          <div class="num">${idx+1}</div>
+          <div class="stepMeta">
+            <div class="t">${s.title}</div>
+            <div class="d">${s.desc}</div>
+          </div>
+        `;
+        btn.addEventListener("click", ()=>selectStep(s.id));
+        wrap.appendChild(btn);
+      });
+
+      // If selected step filtered out, select first
+      const activeId = (window.__activeStepId || stepsData[0].id);
+      const exists = items.some(x=>x.id===activeId);
+      if(!exists && items.length) selectStep(items[0].id);
+      if(!items.length){
+        $("detailH").textContent = "لا توجد نتائج";
+        $("detailP").textContent = "غيّر نص البحث.";
+        $("detailCmdSec").style.display = "none";
+        $("detailChecklistSec").style.display = "none";
+        $("detailBadges").innerHTML = "";
+        $("detailTitle").textContent = "—";
+      }
+    }
+
+    function setBadges(el, badges){
+      el.innerHTML = "";
+      (badges||[]).forEach(b=>{
+        const span = document.createElement("span");
+        span.className = "badge " + (b.v||"");
+        span.textContent = b.t;
+        el.appendChild(span);
+      });
+    }
+
+    function renderCmds(el, cmds){
+      el.innerHTML = "";
+      (cmds||[]).forEach(c=>{
+        const box = document.createElement("div");
+        box.className = "cmd";
+        box.innerHTML = `
+          <div class="top">
+            <div class="label">${c.label || "Command"}</div>
+            <button class="btn" type="button">نسخ</button>
+          </div>
+          <pre></pre>
+        `;
+        box.querySelector("pre").textContent = c.text || "";
+        box.querySelector("button").addEventListener("click", ()=>copyText(c.text||""));
+        el.appendChild(box);
+      });
+    }
+
+    function renderList(el, items){
+      el.innerHTML = "";
+      (items||[]).forEach(x=>{
+        const li = document.createElement("li");
+        li.textContent = x;
+        el.appendChild(li);
+      });
+    }
+
+    function selectStep(id){
+      window.__activeStepId = id;
+      const step = stepsData.find(x=>x.id===id);
+      if(!step) return;
+
+      // active style
+      document.querySelectorAll(".stepBtn").forEach(b=>{
+        b.classList.toggle("active", b.dataset.id===id);
+      });
+
+      $("detailTitle").textContent = step.title;
+      $("detailH").textContent = step.title;
+      $("detailP").textContent = step.desc;
+
+      setBadges($("detailBadges"), step.badges);
+
+      // checklist
+      const hasChecklist = (step.checklist && step.checklist.length);
+      $("detailChecklistSec").style.display = hasChecklist ? "block" : "none";
+      if(hasChecklist) renderList($("detailChecklist"), step.checklist);
+
+      // cmds
+      const hasCmds = (step.commands && step.commands.length);
+      $("detailCmdSec").style.display = hasCmds ? "block" : "none";
+      if(hasCmds) renderCmds($("detailCmds"), step.commands);
+    }
+
+    function renderAddons(){
+      const g = $("addonGrid");
+      g.innerHTML = "";
+      addOns.forEach(a=>{
+        const b = document.createElement("button");
+        b.className = "addonBtn";
+        b.type = "button";
+        b.innerHTML = `<div class="h">${a.title}</div><div class="s">${a.short}</div>`;
+        b.addEventListener("click", ()=>openModal(a.id));
+        g.appendChild(b);
+      });
+    }
+
+    function openModal(id){
+      const a = addOns.find(x=>x.id===id);
+      if(!a) return;
+      $("modalTitle").textContent = a.title;
+      $("modalDesc").textContent = a.desc;
+
+      setBadges($("modalBadges"), a.badges);
+
+      const hasChecklist = (a.checklist && a.checklist.length);
+      $("modalChecklistSec").style.display = hasChecklist ? "block" : "none";
+      if(hasChecklist) renderList($("modalChecklist"), a.checklist);
+
+      const hasCmds = (a.commands && a.commands.length);
+      $("modalCmdSec").style.display = hasCmds ? "block" : "none";
+      if(hasCmds) renderCmds($("modalCmds"), a.commands);
+
+      window.__activeAddonId = id;
+      $("modal").showModal();
+    }
+
+    function closeModal(){
+      $("modal").close();
+    }
+
+    function collectCommands(cmds){
+      return (cmds||[]).map(c => (c.text||"").trim()).filter(Boolean).join("\n\n");
+    }
+
+    // events
+    $("q").addEventListener("input", (e)=>renderSteps(e.target.value));
+
+    $("copyStepBtn").addEventListener("click", ()=>{
+      const step = stepsData.find(x=>x.id===window.__activeStepId);
+      if(!step) return;
+      const text = collectCommands(step.commands);
+      if(!text){ showToast("لا توجد أوامر بهذه الخطوة"); return; }
+      copyText(text);
+    });
+
+    $("openAddonsBtn").addEventListener("click", ()=>openModal("a_free"));
+
+    $("closeModalBtn").addEventListener("click", closeModal);
+    $("modal").addEventListener("click", (e)=>{
+      const rect = $("modal").getBoundingClientRect();
+      const inDialog = (
+        rect.top <= e.clientY && e.clientY <= rect.bottom &&
+        rect.left <= e.clientX && e.clientX <= rect.right
+      );
+      if(!inDialog) closeModal();
+    });
+
+    $("copyModalBtn").addEventListener("click", ()=>{
+      const a = addOns.find(x=>x.id===window.__activeAddonId);
+      if(!a) return;
+      const text = collectCommands(a.commands);
+      if(!text){ showToast("لا توجد أوامر"); return; }
+      copyText(text);
+    });
+
+    $("expandAllBtn").addEventListener("click", ()=>{
+      // open modal with all steps commands
+      const allCmds = stepsData
+        .filter(s=>s.commands && s.commands.length)
+        .map(s=>{
+          const cmds = collectCommands(s.commands);
+          return `# ${s.title}\n${cmds}`;
+        }).join("\n\n");
+      $("modalTitle").textContent = "كل أوامر خطوات الحجز";
+      $("modalDesc").textContent = "نسخة مجمعة لأوامر الخطوات التي تحتوي أوامر فقط.";
+      setBadges($("modalBadges"), [{t:"مجمع", v:"ok"}]);
+      $("modalChecklistSec").style.display = "none";
+      $("modalCmdSec").style.display = "block";
+      renderCmds($("modalCmds"), [{label:"ALL", text: allCmds}]);
+      window.__activeAddonId = null;
+      $("modal").showModal();
+    });
+
+    // init
+    renderSteps("");
+    renderAddons();
+    selectStep(stepsData[0].id);
+  </script>
+</body>
+</html>
+```
