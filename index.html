@@ -159,6 +159,8 @@
     .btnToggle:hover{background: rgba(255,255,255,.85)}
     .refBody{display:none}
     .refBody.open{display:block}
+    .scriptBody{display:none}
+    .scriptBody.open{display:block}
   </style>
 </head>
 <body>
@@ -167,6 +169,41 @@
       <h1>خطوات الحجز من البداية إلى النهاية</h1>
       <p>الثابت بالأزرق الغامق، والمتغير بالأحمر.</p>
     </header>
+
+    <section class="card" id="scriptCard">
+      <div class="hd">
+        <h2>السكريبت الكامل</h2>
+        <button class="btnToggle" id="scriptBtn" type="button">فتح</button>
+      </div>
+      <div class="bd">
+        <div class="scriptBody" id="scriptBody">
+          <div class="sec" style="border-top:none;padding-top:0">
+            <h3>البداية (عربي)</h3>
+            <div class="code"><div class="top">من السكريبت INBOUND.PDF</div><pre>
+السلام عليكم، صباح/مساء الخير.
+الخطوط السعودية مركز العناية بالضيوف، معك ____، كيف أقدر أخدمك اليوم؟
+ممكن تشرفني باسمك؟ (استخدم اسم الضيف مرة على الأقل)
+لا تقاطع الضيف، أظهر المسؤولية: أنا موجود لمساعدتك/بخدمتك/أبشر أنا راح أساعدك.
+إذا وضعت الضيف على الانتظار: بعد إذنك راح أستكمل إجراءات طلبك، أرجع لك خلال دقيقتين، وشكر على الانتظار.
+ارسل نسخة الحجز وراجعها: ITR-EMLA / IEP-EMLA.
+الختام: أي خدمات أخرى؟ سيُحوَّل التقييم (9 راضي / 0 غير راضي).
+            </pre></div>
+          </div>
+
+          <div class="sec">
+            <h3>Opening (English)</h3>
+            <div class="code"><div class="top">from English Script (1).pdf</div><pre>
+Good morning/evening, Saudia Airline, guest care center, this is ____ , how can I help you?
+Can I have your name Sir/Ms? (use the name at least once)
+Do not interrupt; show ownership: I am here to help you Mr/Ms ____.
+If you need to place on hold: I will need two minutes to complete your request. Thank you for waiting, sorry for the delay.
+Send booking and review: ITR-EMLA / IEP-EMLA.
+Closing: Anything else I can do for you? Call will be transferred to survey (9 satisfied / 0 not satisfied).
+            </pre></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <section class="card">
       <div class="hd"><h2>خطوات الحجز</h2></div>
@@ -193,19 +230,12 @@
       </div>
     </section>
 
-    <!-- NEW BLOCK: Reference (opens by button) -->
-    <section class="card" id="refCard">
-      <div class="hd">
-        <h2>مرجع الإدخالات</h2>
-        <button class="btnToggle" id="refBtn" type="button">فتح</button>
-      </div>
+    <section class="card">
+      <div class="hd"><h2>المعلومات</h2></div>
       <div class="bd">
-        <div class="refBody" id="refBody">
-          <div class="hint">الأحمر متغير (أرقام/PNR/تذكرة/سطر/جوال/عضوية…)</div>
-
-          <div class="sec">
-            <h3>استعراض الحجز / التذكرة / القسيمة</h3>
-            <div class="code"><div class="top">PNR / TKT / EMD</div><pre>
+        <div class="sec">
+          <h3>استعراض الحجز / التذكرة / القسيمة</h3>
+          <div class="code"><div class="top">PNR / TKT / EMD</div><pre>
 <span class="fx">RT</span> <span class="vr">###########</span>
 <span class="fx">RT</span> <span class="fx">TKT</span>/<span class="vr">065-2###</span>
 <span class="fx">TWD</span> / <span class="fx">TKT</span> <span class="vr">065-2##</span>
@@ -222,12 +252,12 @@
 
 <span class="fx">TWD</span> / <span class="fx">XT</span>
 <span class="fx">TWH</span> / <span class="fx">XT</span>
-            </pre></div>
-          </div>
+          </pre></div>
+        </div>
 
-          <div class="sec">
-            <h3>قراءات داخل الحجز</h3>
-            <div class="code"><div class="top">داخل PNR</div><pre>
+        <div class="sec">
+          <h3>قراءات داخل الحجز</h3>
+          <div class="code"><div class="top">داخل PNR</div><pre>
 <span class="fx">RT*E</span>
 <span class="fx">DD</span> <span class="vr">RUH</span>
 <span class="fx">IR</span>
@@ -240,43 +270,43 @@
 <span class="fx">AXR RT</span>
 <span class="fx">RTR</span>
 <span class="fx">TDD</span>
-            </pre></div>
-          </div>
+          </pre></div>
+        </div>
 
-          <div class="sec">
-            <h3>إرسال تفاصيل للضيف</h3>
-            <div class="code"><div class="top">Email</div><pre>
+        <div class="sec">
+          <h3>إرسال تفاصيل للضيف</h3>
+          <div class="code"><div class="top">Email</div><pre>
 <span class="fx">ITR-EMLA</span>
 <span class="fx">IEP-EMLA</span>
 
 <span class="vr">#</span><span class="fx">TKT</span>/<span class="fx">TWD</span>../<span class="fx">EML</span>/<span class="fx">FWD</span>/<span class="fx">WM</span>
 <span class="vr">#</span><span class="fx">EMD</span>/<span class="fx">EWD</span>../<span class="fx">EML</span>/<span class="fx">FWD</span>/<span class="fx">WM</span>
-            </pre></div>
-          </div>
+          </pre></div>
+        </div>
 
-          <div class="sec">
-            <h3>تحويلات الأكواد</h3>
-            <div class="code"><div class="top">Codes</div><pre>
+        <div class="sec">
+          <h3>تحويلات الأكواد</h3>
+          <div class="code"><div class="top">Codes</div><pre>
 <span class="fx">DC</span> <span class="vr">saudiarabia</span>
 <span class="fx">DAC</span> <span class="vr">sau</span>
 <span class="fx">DAN</span> <span class="vr">Riyadh</span>
 <span class="fx">DNA</span> <span class="vr">Riyadh</span>
-            </pre></div>
-          </div>
+          </pre></div>
+        </div>
 
-          <div class="sec">
-            <h3>فرسان</h3>
-            <div class="code"><div class="top">FQTV</div><pre>
+        <div class="sec">
+          <h3>فرسان</h3>
+          <div class="code"><div class="top">FQTV</div><pre>
 <span class="fx">PDAP</span> / <span class="fx">PHONE-</span><span class="vr">966####</span>
 <span class="fx">FFD</span> <span class="fx">SV-</span><span class="vr">####</span>
 <span class="fx">FFA</span> <span class="fx">SV-</span><span class="vr">####</span>
 <span class="fx">FFN</span> <span class="fx">SV-</span><span class="vr">####</span>
-            </pre></div>
-          </div>
+          </pre></div>
+        </div>
 
-          <div class="sec">
-            <h3>جهات تواصل (مرجع)</h3>
-            <div class="code"><div class="top">Contact</div><pre>
+        <div class="sec">
+          <h3>جهات تواصل (مرجع)</h3>
+          <div class="code"><div class="top">Contact</div><pre>
 <span class="fx">920022222</span>
 <span class="fx">920000488</span>
 <span class="fx">126862000</span>
@@ -286,8 +316,150 @@
 <span class="fx">GRPS@saudia.com</span>
 <span class="fx">cmcsv@sa.extensya.com</span>
 <span class="fx">KSASVQuality@sa.extensya.com</span>
-            </pre></div>
-          </div>
+          </pre></div>
+        </div>
+
+        <div class="sec">
+          <h3>الإدخالات (من PDF)</h3>
+          <div class="code"><div class="top">أوامر عرض / تحقق</div><pre>
+<span class="fx">RT</span> <span class="vr">###########</span> (PNR)
+<span class="fx">RT TKT</span> / <span class="vr">065-2###</span>
+<span class="fx">TWD</span> / <span class="fx">TKT</span> <span class="vr">065-2##</span>
+<span class="fx">EWD</span> / <span class="fx">EMD</span> <span class="vr">065-4##</span>
+<span class="fx">TWD</span> / <span class="fx">ORG</span><span class="vr">966####</span> (بحث برقم جوال)
+<span class="fx">EWD</span> / <span class="fx">PHONE-</span><span class="vr">966####</span>
+<span class="fx">RTM</span> / <span class="fx">SV</span><span class="vr">####</span> (فرسان)
+<span class="fx">TWD</span> / <span class="fx">O*</span> (أصل التذكرة)
+<span class="fx">TWD</span> / <span class="fx">L</span> <span class="vr">#</span>  |  <span class="fx">EWD</span> / <span class="fx">L</span> <span class="vr">#</span>
+<span class="fx">TWD</span> / <span class="fx">XT</span>  |  <span class="fx">TWH</span> / <span class="fx">XT</span>
+<span class="fx">RT*E</span>  |  <span class="fx">DD</span> <span class="vr">RUH</span>  |  <span class="fx">IR</span>
+<span class="fx">RTSTR</span> | <span class="fx">RTJ</span> | <span class="fx">RHG</span> | <span class="fx">RTF</span>
+<span class="fx">RHI</span> | <span class="fx">RHF</span> | <span class="fx">RT AXR</span> | <span class="fx">RTR</span> | <span class="fx">TDD</span>
+          </pre></div>
+
+          <div class="code"><div class="top">أكواد FARE BASE شائعة</div><pre>
+<span class="vr">YNGR</span> / <span class="vr">YSPGR</span> / <span class="vr">YGRA</span> / <span class="vr">YSSVGREG</span>
+<span class="vr">YMILITARY</span> (عسكري) / <span class="vr">YMDRDON</span> (تبرع أعضاء) / <span class="vr">YDISCMA</span> (خصم المكتب)
+<span class="vr">YDISABL</span> (ذوي إعاقة) / <span class="vr">Y4DISABL</span> / <span class="vr">YBLD</span> (كفيف)
+          </pre></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="hd"><h2>المعلومات</h2></div>
+      <div class="bd">
+        <div class="hint">الأحمر متغير (أرقام/PNR/تذكرة/سطر/جوال/عضوية…)</div>
+
+        <div class="sec" style="border-top:none;padding-top:10px">
+          <h3>استعراض الحجز / التذكرة / القسيمة</h3>
+          <div class="code"><div class="top">PNR / TKT / EMD</div><pre>
+<span class="fx">RT</span> <span class="vr">###########</span>
+<span class="fx">RT</span> <span class="fx">TKT</span>/<span class="vr">065-2###</span>
+<span class="fx">TWD</span> / <span class="fx">TKT</span> <span class="vr">065-2##</span>
+<span class="fx">EWD</span> / <span class="fx">EMD</span> <span class="vr">065-4##</span>
+
+<span class="fx">TWD</span> / <span class="fx">ORG</span><span class="vr">966####</span>
+<span class="fx">EWD</span> / <span class="vr">-966####</span>
+
+<span class="fx">RTM</span> / <span class="fx">SV</span><span class="vr">####</span>
+<span class="fx">TWD</span> / <span class="fx">O*</span>
+
+<span class="fx">TWD</span> / <span class="fx">L</span> <span class="vr">#</span>
+<span class="fx">EWD</span> / <span class="fx">L</span> <span class="vr">#</span>
+
+<span class="fx">TWD</span> / <span class="fx">XT</span>
+<span class="fx">TWH</span> / <span class="fx">XT</span>
+          </pre></div>
+        </div>
+
+        <div class="sec">
+          <h3>قراءات داخل الحجز</h3>
+          <div class="code"><div class="top">داخل PNR</div><pre>
+<span class="fx">RT*E</span>
+<span class="fx">DD</span> <span class="vr">RUH</span>
+<span class="fx">IR</span>
+<span class="fx">RTSTR</span>
+<span class="fx">RTJ</span>
+<span class="fx">RHG</span>
+<span class="fx">RTF</span>
+<span class="fx">RHI</span>
+<span class="fx">RHF</span>
+<span class="fx">AXR RT</span>
+<span class="fx">RTR</span>
+<span class="fx">TDD</span>
+          </pre></div>
+        </div>
+
+        <div class="sec">
+          <h3>إرسال تفاصيل للضيف</h3>
+          <div class="code"><div class="top">Email</div><pre>
+<span class="fx">ITR-EMLA</span>
+<span class="fx">IEP-EMLA</span>
+
+<span class="vr">#</span><span class="fx">TKT</span>/<span class="fx">TWD</span>../<span class="fx">EML</span>/<span class="fx">FWD</span>/<span class="fx">WM</span>
+<span class="vr">#</span><span class="fx">EMD</span>/<span class="fx">EWD</span>../<span class="fx">EML</span>/<span class="fx">FWD</span>/<span class="fx">WM</span>
+          </pre></div>
+        </div>
+
+        <div class="sec">
+          <h3>تحويلات الأكواد</h3>
+          <div class="code"><div class="top">Codes</div><pre>
+<span class="fx">DC</span> <span class="vr">saudiarabia</span>
+<span class="fx">DAC</span> <span class="vr">sau</span>
+<span class="fx">DAN</span> <span class="vr">Riyadh</span>
+<span class="fx">DNA</span> <span class="vr">Riyadh</span>
+          </pre></div>
+        </div>
+
+        <div class="sec">
+          <h3>فرسان</h3>
+          <div class="code"><div class="top">FQTV</div><pre>
+<span class="fx">PDAP</span> / <span class="fx">PHONE-</span><span class="vr">966####</span>
+<span class="fx">FFD</span> <span class="fx">SV-</span><span class="vr">####</span>
+<span class="fx">FFA</span> <span class="fx">SV-</span><span class="vr">####</span>
+<span class="fx">FFN</span> <span class="fx">SV-</span><span class="vr">####</span>
+          </pre></div>
+        </div>
+
+        <div class="sec">
+          <h3>جهات تواصل (مرجع)</h3>
+          <div class="code"><div class="top">Contact</div><pre>
+<span class="fx">920022222</span>
+<span class="fx">920000488</span>
+<span class="fx">126862000</span>
+<span class="fx">920003111</span>
+
+<span class="fx">ruhextencya@saudia.com</span>
+<span class="fx">GRPS@saudia.com</span>
+<span class="fx">cmcsv@sa.extensya.com</span>
+<span class="fx">KSASVQuality@sa.extensya.com</span>
+          </pre></div>
+        </div>
+
+        <div class="sec">
+          <h3>الإدخالات (من PDF)</h3>
+          <div class="code"><div class="top">أوامر عرض / تحقق</div><pre>
+<span class="fx">RT</span> <span class="vr">###########</span> (PNR)
+<span class="fx">RT TKT</span> / <span class="vr">065-2###</span>
+<span class="fx">TWD</span> / <span class="fx">TKT</span> <span class="vr">065-2##</span>
+<span class="fx">EWD</span> / <span class="fx">EMD</span> <span class="vr">065-4##</span>
+<span class="fx">TWD</span> / <span class="fx">ORG</span><span class="vr">966####</span> (بحث برقم جوال)
+<span class="fx">EWD</span> / <span class="fx">PHONE-</span><span class="vr">966####</span>
+<span class="fx">RTM</span> / <span class="fx">SV</span><span class="vr">####</span> (فرسان)
+<span class="fx">TWD</span> / <span class="fx">O*</span> (أصل التذكرة)
+<span class="fx">TWD</span> / <span class="fx">L</span> <span class="vr">#</span>  |  <span class="fx">EWD</span> / <span class="fx">L</span> <span class="vr">#</span>
+<span class="fx">TWD</span> / <span class="fx">XT</span>  |  <span class="fx">TWH</span> / <span class="fx">XT</span>
+<span class="fx">RT*E</span>  |  <span class="fx">DD</span> <span class="vr">RUH</span>  |  <span class="fx">IR</span>
+<span class="fx">RTSTR</span> | <span class="fx">RTJ</span> | <span class="fx">RHG</span> | <span class="fx">RTF</span>
+<span class="fx">RHI</span> | <span class="fx">RHF</span> | <span class="fx">RT AXR</span> | <span class="fx">RTR</span> | <span class="fx">TDD</span>
+          </pre></div>
+
+          <div class="code"><div class="top">أكواد FARE BASE شائعة</div><pre>
+<span class="vr">YNGR</span> / <span class="vr">YSPGR</span> / <span class="vr">YGRA</span> / <span class="vr">YSSVGREG</span>
+<span class="vr">YMILITARY</span> (عسكري) / <span class="vr">YMDRDON</span> (تبرع أعضاء) / <span class="vr">YDISCMA</span> (خصم المكتب)
+<span class="vr">YDISABL</span> (ذوي إعاقة) / <span class="vr">Y4DISABL</span> / <span class="vr">YBLD</span> (كفيف)
+          </pre></div>
         </div>
       </div>
     </section>
@@ -536,9 +708,16 @@
     // NEW BLOCK toggle (no impact on existing blocks)
     const refBtn = document.getElementById("refBtn");
     const refBody = document.getElementById("refBody");
+    const scriptBtn = document.getElementById("scriptBtn");
+    const scriptBody = document.getElementById("scriptBody");
     refBtn.addEventListener("click", ()=>{
       const open = refBody.classList.toggle("open");
       refBtn.textContent = open ? "إغلاق" : "فتح";
+    });
+
+    scriptBtn.addEventListener("click", ()=>{
+      const open = scriptBody.classList.toggle("open");
+      scriptBtn.textContent = open ? "إغلاق" : "فتح";
     });
   </script>
 </body>
