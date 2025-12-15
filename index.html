@@ -175,10 +175,13 @@
     <section class="card" id="scriptCard">
       <div class="hd">
         <h2>السكريبت الكامل</h2>
-        <button class="btnToggle" id="scriptBtn" type="button">فتح</button>
+        <div style="display:flex; gap:8px; flex-wrap:wrap">
+          <button class="btnToggle" id="scriptBtnAr" type="button">العربي</button>
+          <button class="btnToggle" id="scriptBtnEn" type="button">English</button>
+        </div>
       </div>
       <div class="bd">
-        <div class="scriptBody" id="scriptBody">
+        <div class="scriptBody" id="scriptBodyAr">
           <div class="sec" style="border-top:none;padding-top:0">
             <h3>البداية (عربي) — من السكريبت INBOUND.PDF</h3>
             <div class="code"><div class="top">Opening</div><pre>
@@ -186,20 +189,22 @@
 الخطوط السعودية مركز العناية بالضيوف، معك ____، كيف أقدر أخدمك اليوم؟
 ممكن تشرفني باسمك؟ (استخدم اسم الضيف مرة على الأقل)
 لا تقاطع الضيف؛ أظهر المسؤولية: أنا موجود لمساعدتك/بخدمتك/أبشر أنا راح أساعدك.
-إذا احتجت الانتظار: بعد إذنك راح أستكمل طلبك وأرجع لك خلال دقيقتين، وشكرًا على الانتظار.
-أرسل نسخة الحجز وراجعها: ITR-EMLA / IEP-EMLA.
-الختام: أي خدمات أخرى؟ سيتم تحويل المكالمة للتقييم (9 راضي / 0 غير راضي).
+الانتظار: بعد إذنك أستكمل طلبك وأرجع خلال دقيقتين. شكرًا لانتظارك.
+إرسال الحجز: ITR-EMLA / IEP-EMLA (راجع مع الضيف).
+الختام: أي خدمات أخرى؟ سيحوَّل للتقييم (9 راضي / 0 غير راضي).
             </pre></div>
           </div>
+        </div>
 
-          <div class="sec">
+        <div class="scriptBody" id="scriptBodyEn">
+          <div class="sec" style="border-top:none;padding-top:0">
             <h3>Opening (English) — from English Script (1).pdf</h3>
             <div class="code"><div class="top">Opening</div><pre>
 Good morning/evening, Saudia Airline, guest care center, this is ____ , how can I help you?
 Can I have your name Sir/Ms? (use the name at least once)
 Do not interrupt; show ownership: I am here to help you Mr/Ms ____.
-If on hold: I will need two minutes to complete your request. Thank you for waiting, sorry for the delay.
-Send booking: ITR-EMLA / IEP-EMLA.
+Hold: I will need two minutes to complete your request. Thank you for waiting; sorry for the delay.
+Send booking: ITR-EMLA / IEP-EMLA (review with guest).
 Closing: Anything else I can do for you? Call will be transferred to survey (9 satisfied / 0 not satisfied).
             </pre></div>
           </div>
@@ -381,18 +386,18 @@ Closing: Anything else I can do for you? Call will be transferred to survey (9 s
           </pre></div>
 
           <div class="code"><div class="top">رموز حسب الشهور (من ملف الإدخالات)</div><pre>
-Jan: <span class="vr">YNGR</span>
-Feb: <span class="vr">YSPGR</span>
-Mar: <span class="vr">YGRA</span>
-Apr: <span class="vr">YSSVGREG</span>
-May: <span class="vr">YMILITARY</span>
-Jun: <span class="vr">YMEDTRS</span>
-Jul: <span class="vr">YMDRDON</span>
-Aug: <span class="vr">YDISCMA</span>
-Sep: <span class="vr">YDISABL</span>
-Oct: <span class="vr">Y4DISABL</span>
-Nov: <span class="vr">YBLD</span>
-Dec: <span class="vr">FP EBWSVXX</span>
+Jan: FARE BASE نوع التذكرة
+Feb: <span class="vr">YNGR</span>
+Mar: <span class="vr">YSPGR</span>
+Apr: <span class="vr">YGRA</span>
+May: <span class="vr">YSSVGREG</span>
+Jun: <span class="vr">YMILITARY</span>
+Jul: <span class="vr">YMEDTRS</span> (قلب/كبد/كلية)
+Aug: <span class="vr">YMDRDON</span> (تعديل عبر المتبرعين)
+Sep: <span class="vr">YDISCMA</span> (خصم مكتب الطيران)
+Oct: <span class="vr">YDISABL</span> (ذوي إعاقة)
+Nov: <span class="vr">Y4DISABL</span>
+Dec: <span class="vr">YBLD</span> (كفيف) — ملاحظة الصباح فقط: <span class="vr">FP EBWSVXX</span>
           </pre></div>
 
           <div class="code"><div class="top">أوامر سريعة (تسلسل من الملف)</div><pre>
@@ -789,8 +794,10 @@ Dec: <span class="vr">FP EBWSVXX</span>
     // NEW BLOCK toggle (no impact on existing blocks)
     const refBtn = document.getElementById("refBtn");
     const refBody = document.getElementById("refBody");
-    const scriptBtn = document.getElementById("scriptBtn");
-    const scriptBody = document.getElementById("scriptBody");
+    const scriptBtnAr = document.getElementById("scriptBtnAr");
+    const scriptBtnEn = document.getElementById("scriptBtnEn");
+    const scriptBodyAr = document.getElementById("scriptBodyAr");
+    const scriptBodyEn = document.getElementById("scriptBodyEn");
     if(refBtn && refBody){
       refBtn.addEventListener("click", ()=>{
         const open = refBody.classList.toggle("open");
@@ -798,11 +805,26 @@ Dec: <span class="vr">FP EBWSVXX</span>
       });
     }
 
-    if(scriptBtn && scriptBody){
-      scriptBtn.addEventListener("click", ()=>{
-        const open = scriptBody.classList.toggle("open");
-        scriptBtn.textContent = open ? "إغلاق" : "فتح";
-      });
+    function toggleScript(btn, body){
+      if(!btn || !body) return;
+      const open = body.classList.toggle("open");
+      btn.textContent = open ? "إغلاق" : (btn.id === "scriptBtnAr" ? "العربي" : "English");
+      // close the other body
+      if(body === scriptBodyAr && scriptBodyEn){
+        scriptBodyEn.classList.remove("open");
+        if(scriptBtnEn) scriptBtnEn.textContent = "English";
+      }
+      if(body === scriptBodyEn && scriptBodyAr){
+        scriptBodyAr.classList.remove("open");
+        if(scriptBtnAr) scriptBtnAr.textContent = "العربي";
+      }
+    }
+
+    if(scriptBtnAr && scriptBodyAr){
+      scriptBtnAr.addEventListener("click", ()=>toggleScript(scriptBtnAr, scriptBodyAr));
+    }
+    if(scriptBtnEn && scriptBodyEn){
+      scriptBtnEn.addEventListener("click", ()=>toggleScript(scriptBtnEn, scriptBodyEn));
     }
   </script>
 </body>
