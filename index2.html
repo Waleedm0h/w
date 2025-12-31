@@ -1,0 +1,1057 @@
+هذا ملف HTML بعد التعديل: أضفت **خانة (نوع الإجراء)** تفصل بين **الحجز المبدئي** و **خدمات ما بعد البيع** + أضفت **قائمة سيناريوهات ما بعد البيع كاملة** كـ Accordion بخيارات واضحة.
+
+```html
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>خطوات الحجز - أماديوس (SV)</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --panel:#f3f4f6;
+      --panel2:#f9fafb;
+      --text:#0b0f19;
+      --muted:#4b5563;
+      --line:#d1d5db;
+
+      --fixed:#0b2a5b;      /* ثابت = أزرق غامق */
+      --var:#c1121f;        /* متغير = أحمر */
+
+      --shadow: 0 12px 30px rgba(0,0,0,.08);
+      --radius:16px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial;
+      background: var(--bg);
+      color: var(--text);
+      user-select:none;
+      -webkit-user-select:none;
+      -ms-user-select:none;
+    }
+
+    .wrap{max-width:900px; margin:0 auto; padding:18px}
+
+    header{
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      padding:14px 14px;
+      background: var(--panel2);
+      box-shadow: var(--shadow);
+    }
+    header h1{margin:0; font-size:18px}
+    header p{margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.7}
+
+    .card{
+      margin-top:12px;
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      overflow:hidden;
+      background: var(--panel2);
+      box-shadow: var(--shadow);
+    }
+    .hd{
+      padding:12px 12px;
+      border-bottom:1px solid var(--line);
+      background: var(--panel);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .hd h2{margin:0; font-size:14px}
+    .bd{padding:12px}
+
+    .fx{color: var(--fixed); font-weight:900}
+    .vr{color: var(--var); font-weight:900}
+
+    .hint{
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      color: var(--muted);
+      font-size:12px;
+      line-height:1.85;
+    }
+
+    /* Accordion */
+    .acc{display:flex; flex-direction:column; gap:10px}
+    .accItem{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      overflow:hidden;
+    }
+    .accBtn{
+      width:100%;
+      text-align:right;
+      background:#fff;
+      border:none;
+      padding:12px 12px;
+      cursor:pointer;
+      display:flex; gap:10px; align-items:flex-start;
+    }
+    .accBtn:hover{background: rgba(243,244,246,.7)}
+    .num{
+      min-width:30px; height:30px; border-radius:10px;
+      display:grid; place-items:center;
+      border:1px solid var(--line);
+      background: var(--panel);
+      color: var(--text);
+      font-weight:900;
+    }
+    .meta{display:flex; flex-direction:column; gap:4px}
+    .meta .t{font-weight:900; font-size:13px}
+    .meta .d{color:var(--muted); font-size:12px; line-height:1.6}
+
+    .accBody{
+      border-top:1px solid var(--line);
+      background: #fff;
+      padding:12px 12px;
+      display:none;
+    }
+    .accItem.open .accBody{display:block}
+    .accItem.open{border-color: var(--fixed); outline:2px solid rgba(11,42,91,.10)}
+
+    .sec{margin-top:12px; padding-top:12px; border-top:1px dashed var(--line)}
+    .sec h3{margin:0 0 10px; font-size:13px}
+
+    .code{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      overflow:hidden;
+      margin-top:10px;
+    }
+    .code:first-child{margin-top:0}
+    .code .top{
+      padding:9px 10px;
+      border-bottom:1px solid var(--line);
+      background: var(--panel);
+      font-size:12px;
+      color: var(--muted);
+    }
+    pre{
+      margin:0;
+      padding:10px 12px;
+      white-space:pre-wrap;
+      word-break:break-word;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:12.5px;
+      line-height:1.85;
+      color: var(--text);
+    }
+
+    ul{margin:0; padding:0 18px 0 0; color:var(--muted); font-size:13px; line-height:1.9}
+    li{margin:4px 0}
+
+    /* Reference block toggle (new block) */
+    .btnToggle{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-size:12px;
+      color: var(--text);
+      white-space:nowrap;
+    }
+    .btnToggle:hover{background: rgba(255,255,255,.85)}
+    .refBody{display:none}
+    .refBody.open{display:block}
+    .scriptBody{display:none}
+    .scriptBody.open{display:block}
+
+    /* NEW: Mode switch */
+    .modeRow{display:flex; gap:8px; flex-wrap:wrap}
+    .modeBtn{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:9px 12px;
+      cursor:pointer;
+      font-size:12.5px;
+      font-weight:900;
+      color: var(--text);
+      white-space:nowrap;
+    }
+    .modeBtn:hover{background: rgba(243,244,246,.7)}
+    .modeBtn.active{
+      background: var(--fixed);
+      color:#fff;
+      border-color: var(--fixed);
+    }
+    .hidden{display:none !important;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>خطوات الحجز من البداية إلى النهاية</h1>
+      <p>الثابت بالأزرق الغامق، والمتغير بالأحمر.</p>
+    </header>
+
+    <!-- NEW: فصل الحجز المبدئي عن خدمات ما بعد البيع -->
+    <section class="card" id="modeCard">
+      <div class="hd"><h2>نوع الإجراء</h2></div>
+      <div class="bd">
+        <div class="modeRow">
+          <button class="modeBtn active" type="button" data-mode="pre">الحجز المبدئي</button>
+          <button class="modeBtn" type="button" data-mode="after">خدمات ما بعد البيع</button>
+        </div>
+        <div class="hint" style="margin-top:10px">اختر القسم لعرض الخطوات المناسبة.</div>
+      </div>
+    </section>
+
+    <!-- ===================== PRE BOOKING (الحجز المبدئي) ===================== -->
+    <div id="preSection">
+      <section class="card" id="scriptCardA">
+        <div class="hd">
+          <h2>السكريبت الكامل</h2>
+          <div style="display:flex; gap:8px; flex-wrap:wrap">
+            <button class="btnToggle" id="scriptBtnAr" type="button">العربي</button>
+            <button class="btnToggle" id="scriptBtnEn" type="button">English</button>
+          </div>
+        </div>
+        <div class="bd">
+          <div class="scriptBody" id="scriptBodyAr">
+            <div class="sec" style="border-top:none;padding-top:0">
+              <h3>البداية (عربي) — من السكريبت INBOUND.PDF</h3>
+              <div class="code"><div class="top">Opening</div><pre>
+السلام عليكم، صباح/مساء الخير.
+الخطوط السعودية مركز العناية بالضيوف، معك ____، كيف أقدر أخدمك اليوم؟
+ممكن تشرفني باسمك؟ (استخدم اسم الضيف مرة على الأقل)
+لا تقاطع الضيف؛ أظهر المسؤولية: أنا موجود لمساعدتك/بخدمتك/أبشر أنا راح أساعدك.
+الانتظار: بعد إذنك أستكمل طلبك وأرجع خلال دقيقتين. شكرًا لانتظارك.
+إرسال الحجز: ITR-EMLA / IEP-EMLA (راجع مع الضيف).
+الختام: أي خدمات أخرى؟ سيحوَّل للتقييم (9 راضي / 0 غير راضي).
+              </pre></div>
+            </div>
+          </div>
+
+          <div class="scriptBody" id="scriptBodyEn">
+            <div class="sec" style="border-top:none;padding-top:0">
+              <h3>Opening (English) — from English Script (1).pdf</h3>
+              <div class="code"><div class="top">Opening</div><pre>
+Good morning/evening, Saudia Airline, guest care center, this is ____ , how can I help you?
+Can I have your name Sir/Ms? (use the name at least once)
+Do not interrupt; show ownership: I am here to help you Mr/Ms ____.
+Hold: I will need two minutes to complete your request. Thank you for waiting; sorry for the delay.
+Send booking: ITR-EMLA / IEP-EMLA (review with guest).
+Closing: Anything else I can do for you? Call will be transferred to survey (9 satisfied / 0 not satisfied).
+              </pre></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="scriptCardB">
+        <div class="hd">
+          <h2>السكريبت الكامل</h2>
+          <button class="btnToggle" id="scriptBtn" type="button">فتح</button>
+        </div>
+        <div class="bd">
+          <div class="scriptBody" id="scriptBody">
+            <div class="sec" style="border-top:none;padding-top:0">
+              <h3>البداية (عربي)</h3>
+              <div class="code"><div class="top">من السكريبت INBOUND.PDF</div><pre>
+السلام عليكم، صباح/مساء الخير.
+الخطوط السعودية مركز العناية بالضيوف، معك ____، كيف أقدر أخدمك اليوم؟
+ممكن تشرفني باسمك؟ (استخدم اسم الضيف مرة على الأقل)
+لا تقاطع الضيف، أظهر المسؤولية: أنا موجود لمساعدتك/بخدمتك/أبشر أنا راح أساعدك.
+إذا وضعت الضيف على الانتظار: بعد إذنك راح أستكمل إجراءات طلبك، أرجع لك خلال دقيقتين، وشكر على الانتظار.
+ارسل نسخة الحجز وراجعها: ITR-EMLA / IEP-EMLA.
+الختام: أي خدمات أخرى؟ سيُحوَّل التقييم (9 راضي / 0 غير راضي).
+              </pre></div>
+            </div>
+
+            <div class="sec">
+              <h3>Opening (English)</h3>
+              <div class="code"><div class="top">from English Script (1).pdf</div><pre>
+Good morning/evening, Saudia Airline, guest care center, this is ____ , how can I help you?
+Can I have your name Sir/Ms? (use the name at least once)
+Do not interrupt; show ownership: I am here to help you Mr/Ms ____.
+If you need to place on hold: I will need two minutes to complete your request. Thank you for waiting, sorry for the delay.
+Send booking and review: ITR-EMLA / IEP-EMLA.
+Closing: Anything else I can do for you? Call will be transferred to survey (9 satisfied / 0 not satisfied).
+              </pre></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="hd"><h2>خطوات الحجز</h2></div>
+        <div class="bd">
+          <div class="acc" id="steps"></div>
+
+          <div class="sec">
+            <h3>تنبيهات سريعة</h3>
+            <ul>
+              <li>إذا ظهرت: <span class="vr">NEED TICKETING ARGUMENTS / ARRANGEMENT</span> الحل: <span class="fx">TKOK</span></li>
+              <li>إذا ظهرت: <span class="vr">NEED TEST</span> الحل: <span class="fx">FXP</span></li>
+              <li>إذا ظهرت: <span class="vr">PREVIOUS TST EXISTS/SEGMENT OVERLAP</span> الحل: <span class="fx">TTE/ALL</span> ثم <span class="fx">TMX/ALL</span></li>
+              <li>إذا ظهرت: <span class="vr">TICKETING INHIBITED - SSR DOCS MISSING</span> لازم إضافة <span class="fx">SSR DOCS</span></li>
+              <li>بعد كل خطوة مهمة: <span class="fx">RFF</span> ثم <span class="fx">ER</span> ثم <span class="fx">ER</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="hd"><h2>الإضافات</h2></div>
+        <div class="bd">
+          <div class="acc" id="addons"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="hd"><h2>المعلومات</h2></div>
+        <div class="bd">
+          <div class="sec">
+            <h3>استعراض الحجز / التذكرة / القسيمة</h3>
+            <div class="code"><div class="top">PNR / TKT / EMD</div><pre>
+<span class="fx">RT</span> <span class="vr">###########</span>
+<span class="fx">RT</span> <span class="fx">TKT</span>/<span class="vr">065-2###</span>
+<span class="fx">TWD</span> / <span class="fx">TKT</span> <span class="vr">065-2##</span>
+<span class="fx">EWD</span> / <span class="fx">EMD</span> <span class="vr">065-4##</span>
+
+<span class="fx">TWD</span> / <span class="fx">ORG</span><span class="vr">966####</span>
+<span class="fx">EWD</span> / <span class="vr">-966####</span>
+
+<span class="fx">RTM</span> / <span class="fx">SV</span><span class="vr">####</span>
+<span class="fx">TWD</span> / <span class="fx">O*</span>
+
+<span class="fx">TWD</span> / <span class="fx">L</span> <span class="vr">#</span>
+<span class="fx">EWD</span> / <span class="fx">L</span> <span class="vr">#</span>
+
+<span class="fx">TWD</span> / <span class="fx">XT</span>
+<span class="fx">TWH</span> / <span class="fx">XT</span>
+            </pre></div>
+          </div>
+
+          <div class="sec">
+            <h3>قراءات داخل الحجز</h3>
+            <div class="code"><div class="top">داخل PNR</div><pre>
+<span class="fx">RT*E</span>
+<span class="fx">DD</span> <span class="vr">RUH</span>
+<span class="fx">IR</span>
+<span class="fx">RTSTR</span>
+<span class="fx">RTJ</span>
+<span class="fx">RHG</span>
+<span class="fx">RTF</span>
+<span class="fx">RHI</span>
+<span class="fx">RHF</span>
+<span class="fx">AXR RT</span>
+<span class="fx">RTR</span>
+<span class="fx">TDD</span>
+            </pre></div>
+          </div>
+
+          <div class="sec">
+            <h3>إرسال تفاصيل للضيف</h3>
+            <div class="code"><div class="top">Email</div><pre>
+<span class="fx">ITR-EMLA</span>
+<span class="fx">IEP-EMLA</span>
+
+<span class="vr">#</span><span class="fx">TKT</span>/<span class="fx">TWD</span>../<span class="fx">EML</span>/<span class="fx">FWD</span>/<span class="fx">WM</span>
+<span class="vr">#</span><span class="fx">EMD</span>/<span class="fx">EWD</span>../<span class="fx">EML</span>/<span class="fx">FWD</span>/<span class="fx">WM</span>
+            </pre></div>
+          </div>
+
+          <div class="sec">
+            <h3>جهات تواصل (مرجع)</h3>
+            <div class="code"><div class="top">Contact</div><pre>
+<span class="fx">920022222</span>
+<span class="fx">920000488</span>
+<span class="fx">126862000</span>
+<span class="fx">920003111</span>
+
+<span class="fx">ruhextencya@saudia.com</span>
+<span class="fx">GRPS@saudia.com</span>
+<span class="fx">cmcsv@sa.extensya.com</span>
+<span class="fx">KSASVQuality@sa.extensya.com</span>
+            </pre></div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+
+    <!-- ===================== AFTER SALES (خدمات ما بعد البيع) ===================== -->
+    <div id="afterSection" class="hidden">
+      <section class="card">
+        <div class="hd"><h2>خدمات ما بعد البيع</h2></div>
+        <div class="bd">
+          <div class="hint">اختر السيناريو المناسب حسب نتيجة التسعير/الغرامة/الجراند توتال أو نوع الطلب.</div>
+          <div class="acc" id="afterSales"></div>
+        </div>
+      </section>
+    </div>
+
+  </div>
+
+  <script>
+    // منع النسخ/القص/الزر الأيمن/اختصارات شائعة
+    document.addEventListener("contextmenu", e => e.preventDefault());
+    ["copy","cut","paste","selectstart","dragstart"].forEach(ev=>{
+      document.addEventListener(ev, e => e.preventDefault());
+    });
+    document.addEventListener("keydown", (e)=>{
+      const k = (e.key || "").toLowerCase();
+      if ((e.ctrlKey || e.metaKey) && ["c","x","v","a","u","s","p"].includes(k)) e.preventDefault();
+      if (e.key === "F12") e.preventDefault();
+    });
+
+    // NEW: mode switching
+    const preSection = document.getElementById("preSection");
+    const afterSection = document.getElementById("afterSection");
+    const modeBtns = Array.from(document.querySelectorAll(".modeBtn"));
+
+    function setMode(mode){
+      modeBtns.forEach(b => b.classList.toggle("active", b.dataset.mode === mode));
+      if(mode === "after"){
+        preSection.classList.add("hidden");
+        afterSection.classList.remove("hidden");
+      }else{
+        afterSection.classList.add("hidden");
+        preSection.classList.remove("hidden");
+      }
+      window.scrollTo({top:0, behavior:"smooth"});
+    }
+    modeBtns.forEach(btn => btn.addEventListener("click", ()=>setMode(btn.dataset.mode)));
+
+    const stepsData = [
+      {
+        title: "الخطوة الأولى: تحديد مواعيد الرحلة",
+        desc: "التاريخ + مدينة الإقلاع + مدينة الوصول.",
+        body: `
+          <div class="code">
+            <div class="top">فئات الدرجات وأحرفها</div>
+            <pre><span class="fx">الضيافة</span>: <span class="vr">Y E B M K H L Q T N V</span></pre>
+            <pre><span class="fx">الأعمال</span>: <span class="vr">J C D I</span></pre>
+            <pre><span class="fx">الأولى</span>: <span class="vr">F A P</span></pre>
+          </div>
+        `
+      },
+      {
+        title: "الخطوة الثانية: تحديد الدرجة وعدد المقاعد والباقة",
+        desc: "تسعير ثم اختيار الباقة.",
+        body: `
+          <div class="code">
+            <div class="top">التسعير</div>
+            <pre><span class="fx">FXX</span></pre>
+          </div>
+          <div class="code">
+            <div class="top">اختيار الباقة</div>
+            <pre><span class="fx">FXX/FF-</span> <span class="vr">اختيار_الباقة</span></pre>
+          </div>
+        `
+      },
+      {
+        title: "الخطوة الثالثة: إضافة الأسماء",
+        desc: "ذكر / أنثى / طفل / طفلة / رضيع (يربط مع بالغ).",
+        body: `
+          <div class="sec" style="border-top:none;padding-top:0;margin-top:0">
+            <h3>ذكر</h3>
+            <div class="code"><div class="top">NM1</div>
+              <pre><span class="fx">NM1</span> <span class="vr">LASTNAME</span>/<span class="vr">FIRSTNAME</span> <span class="fx">MR</span></pre>
+            </div>
+          </div>
+
+          <div class="sec">
+            <h3>أنثى</h3>
+            <div class="code"><div class="top">NM1</div>
+              <pre><span class="fx">NM1</span> <span class="vr">LASTNAME</span>/<span class="vr">FIRSTNAME</span> <span class="fx">MS</span></pre>
+            </div>
+          </div>
+
+          <div class="sec">
+            <h3>طفل</h3>
+            <div class="code"><div class="top">NM1</div>
+              <pre><span class="fx">NM1</span> <span class="vr">LASTNAME</span>/<span class="vr">FIRSTNAME</span> <span class="fx">MSTR</span> (<span class="fx">CHD</span>/<span class="vr">BOD</span>)</pre>
+            </div>
+          </div>
+
+          <div class="sec">
+            <h3>طفلة</h3>
+            <div class="code"><div class="top">NM1</div>
+              <pre><span class="fx">NM1</span> <span class="vr">LASTNAME</span>/<span class="vr">FIRSTNAME</span> <span class="fx">MISS</span></pre>
+            </div>
+          </div>
+
+          <div class="sec">
+            <h3>رضيع (يربط مع بالغ)</h3>
+            <div class="code"><div class="top">NM1</div>
+              <pre><span class="fx">NM1</span> <span class="vr">LASTNAME</span>/<span class="vr">FIRSTNAME</span> <span class="fx">MS</span> (<span class="fx">INF</span><span class="vr">LASTNAME</span>/<span class="vr">FIRSTNAME</span>/<span class="vr">DOB</span>)</pre>
+            </div>
+          </div>
+        `
+      },
+      {
+        title: "الخطوة الرابعة: التواصل + الوثائق + التثبيت + الدفع + التصدير",
+        desc: "APM/APN/APE ثم TKOK والحفظ ثم SSR DOCS ثم FXP/FF- ثم SADAD ثم التصدير.",
+        body: `
+          <div class="code">
+            <div class="top">بيانات التواصل</div>
+            <pre>
+<span class="fx">APM-SV/M+966</span><span class="vr">PHONENO</span><span class="fx">/P</span><span class="vr">1,2,3,4</span>
+<span class="fx">APN-SV/M+966</span><span class="vr">PHONENO</span><span class="fx">/P</span><span class="vr">1,2,3,4</span>
+<span class="fx">APE-</span><span class="vr">EMAIL</span>
+            </pre>
+          </div>
+
+          <div class="code">
+            <div class="top">TKOK + الحفظ</div>
+            <pre>
+<span class="fx">TKOK</span>
+<span class="fx">RFF</span> &gt; <span class="fx">ER</span> &gt; <span class="fx">ER</span>
+            </pre>
+          </div>
+
+          <div class="code">
+            <div class="top">وثائق السفر (SSR DOCS)</div>
+            <pre>
+<span class="fx">SR DOCS SV HK1-</span><span class="vr">I</span><span class="fx">-</span><span class="vr">SAU</span><span class="fx">-</span><span class="vr">1000000006</span><span class="fx">-</span><span class="vr">SAU</span><span class="fx">-</span><span class="vr">14SEP92</span><span class="fx">-</span><span class="vr">M</span><span class="fx">-</span><span class="vr">12DEC30</span><span class="fx">-</span><span class="vr">LASTNAME</span>/<span class="vr">FIRSTNAME</span><span class="fx">/P</span><span class="vr">1</span>
+            </pre>
+          </div>
+
+          <div class="hint">
+            <span class="fx">نوع الوثيقة:</span>
+            <span class="vr">I</span>=هوية وطنية ، <span class="vr">A</span>=إقامة ، <span class="vr">P</span>=جواز سفر
+          </div>
+
+          <div class="code">
+            <div class="top">تثبيت السعر + اختيار الباقة</div>
+            <pre>
+<span class="fx">FXP</span>
+<span class="fx">FXP/FF-</span> <span class="vr">اختيار_الباقة</span>
+            </pre>
+          </div>
+
+          <div class="code">
+            <div class="top">الدفع + الحفظ</div>
+            <pre>
+<span class="fx">FP-SADAD</span>
+<span class="fx">RFF</span> &gt; <span class="fx">ER</span> &gt; <span class="fx">ER</span>
+            </pre>
+          </div>
+
+          <div class="code">
+            <div class="top">التصدير</div>
+            <pre><span class="fx">TTP/RT</span></pre>
+          </div>
+        `
+      }
+    ];
+
+    const addOns = [
+      {
+        title: "خدمات مجانية",
+        desc: "كرسي متحرك / سرير رضيع / كفيف / أصم",
+        body: `
+          <div class="code"><div class="top">أوامر</div><pre>
+<span class="fx">SR WCHR/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">SR WCHS/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">SR WCHC/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">SR BSCT/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">SR BLND/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">SR DEAF/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">RFF</span> &gt; <span class="fx">ER</span> &gt; <span class="fx">ER</span>
+          </pre></div>
+        `
+      },
+      {
+        title: "الوجبات",
+        desc: "استعراض ثم إضافة كود الوجبة",
+        body: `
+          <div class="code"><div class="top">أوامر</div><pre>
+<span class="fx">HE MEAL</span>
+<span class="fx">MS22</span>
+<span class="fx">SR</span> <span class="vr">MEALCODE</span><span class="fx">/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">RFF</span> &gt; <span class="fx">ER</span> &gt; <span class="fx">ER</span>
+          </pre></div>
+        `
+      },
+      {
+        title: "حقيبة مدفوعة (XBAG)",
+        desc: "SR XBAG ثم خدمات ثم دفع بطاقة ثم TTM/RT",
+        body: `
+          <div class="code"><div class="top">أوامر</div><pre>
+<span class="fx">SR XBAG NN</span><span class="vr">1</span><span class="fx">-TTL0KG1PC/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">TTE/ALL</span>
+<span class="fx">TMX/ALL</span>
+<span class="fx">RTG</span>
+<span class="fx">FXG/L</span> <span class="vr">#</span>
+<span class="fx">TMI/ALL/FP-CC</span><span class="vr">########</span>
+<span class="fx">RFF</span> &gt; <span class="fx">ER</span> &gt; <span class="fx">ER</span>
+<span class="fx">TTM/RT</span>
+          </pre></div>
+        `
+      },
+      {
+        title: "مقعد مدفوع (SEAT)",
+        desc: "SM ثم خدمات ثم دفع بطاقة ثم TTM/RT",
+        body: `
+          <div class="code"><div class="top">أوامر</div><pre>
+<span class="fx">SM</span>
+<span class="fx">TTE/ALL</span>
+<span class="fx">TMX/ALL</span>
+<span class="fx">RTG</span>
+<span class="fx">FXG/L</span> <span class="vr">#</span>
+<span class="fx">TMI/ALL/FP-CC</span><span class="vr">########</span>
+<span class="fx">RFF</span> &gt; <span class="fx">ER</span> &gt; <span class="fx">ER</span>
+<span class="fx">TTM/RT</span>
+          </pre></div>
+        `
+      }
+    ];
+
+    // NEW: After-sales scenarios (كل السيناريوهات)
+    const afterSalesData = [
+      {
+        title: "تعديل (Exchange): غرامة + بدون فرق سعر",
+        desc: "Penalty فقط بدون Fare Difference.",
+        body: `
+          <div class="code"><div class="top">التسلسل</div><pre>
+<span class="fx">AN</span>
+<span class="fx">FXF/S</span><span class="vr">#</span>
+<span class="fx">TTE/ALL</span>
+<span class="fx">TMX/ALL</span>
+<span class="fx">FXQ/S</span><span class="vr">#</span>
+<span class="fx">TMI/ALL/FP-CC</span>  <span class="fx">(الدفع الجديد)</span>
+<span class="fx">حذف جميع FP - عبر RTF</span>  <span class="fx">+ إدخال القديمة</span> <span class="fx">/FPO</span>
+<span class="fx">RFF</span> . <span class="fx">ER</span> . <span class="fx">ER</span>
+<span class="fx">TQO</span>
+<span class="fx">TTP/T</span><span class="vr">#</span><span class="fx">/TTM/RT</span>
+          </pre></div>
+          <div class="hint">بعد التسعير تأكد من الباقات/الحقائب وبلّغ الضيف قبل الإكمال، وبعد التصدير تأكد من الخصم وظهور <span class="fx">OK ETICKET WELL ISSUED</span> ثم أرسل: Suggest <span class="fx">ITR-EMLA</span> / <span class="fx">IEP-EMLA</span>.</div>
+        `
+      },
+      {
+        title: "تعديل (Exchange): فرق سعر + بدون غرامة",
+        desc: "Fare Difference فقط بدون Penalty.",
+        body: `
+          <div class="code"><div class="top">التسلسل</div><pre>
+<span class="fx">AN</span>
+<span class="fx">FXF/S</span><span class="vr">#</span>
+<span class="fx">TTE/ALL</span>
+<span class="fx">TMX/ALL</span>
+<span class="fx">FXQ/S</span><span class="vr">#</span>
+<span class="fx">حذف جميع FP - عبر RTF</span>
+<span class="fx">الدفع الجديد CC+</span> <span class="fx">/</span> <span class="fx">الدفع القديم /FPO</span>
+<span class="fx">RFF</span> . <span class="fx">ER</span> . <span class="fx">ER</span>
+<span class="fx">TQO</span>
+<span class="fx">TTP/T</span><span class="vr">#</span><span class="fx">/RT</span>
+          </pre></div>
+          <div class="hint">نفس التنبيه: تأكد من الباقات/الحقائب بعد التسعير وبلّغ الضيف قبل الإكمال + تأكد من الخصم بعد التصدير.</div>
+        `
+      },
+      {
+        title: "تعديل (Exchange): غرامة + فرق سعر",
+        desc: "Penalty + Fare Difference معًا.",
+        body: `
+          <div class="code"><div class="top">التسلسل</div><pre>
+<span class="fx">AN</span>
+<span class="fx">FXF/S</span><span class="vr">#</span>
+<span class="fx">TTE/ALL</span>
+<span class="fx">TMX/ALL</span>
+<span class="fx">FXQ/S</span><span class="vr">#</span>
+<span class="fx">TMI/ALL/FP-CC</span>  <span class="fx">(الدفع الجديد)</span>
+<span class="fx">حذف جميع FP - عبر RTF</span>
+<span class="fx">الدفع الجديد CC+</span> <span class="fx">/</span> <span class="fx">الدفع القديم /FPO</span>
+<span class="fx">RFF</span> . <span class="fx">ER</span> . <span class="fx">ER</span>
+<span class="fx">TQO</span>
+<span class="fx">TTP/T</span><span class="vr">#</span><span class="fx">/TTM/RT</span>
+          </pre></div>
+        `
+      },
+      {
+        title: "جراند توتال سالب (-) VALUE RESIDUAL",
+        desc: "يوجد رصيد/قيمة متبقية بعد التعديل.",
+        body: `
+          <div class="code"><div class="top">التسلسل</div><pre>
+<span class="fx">AN</span>
+<span class="fx">FXF/S</span><span class="vr">#</span>
+<span class="fx">TTE/ALL</span>
+<span class="fx">TMX/ALL</span>
+<span class="fx">FXQ/S</span><span class="vr">#</span>
+<span class="fx">TMI/ALL/FP-O</span>  <span class="fx">(الدفع القديم)</span>
+<span class="fx">حذف جميع FP - عبر RTF</span>
+<span class="fx">الدفع القديم /FPO</span>
+<span class="fx">RFF</span> . <span class="fx">ER</span> . <span class="fx">ER</span>
+<span class="fx">TQO</span>
+<span class="fx">TTP/T</span><span class="vr">#</span><span class="fx">/TTM/RT</span>
+          </pre></div>
+          <div class="code"><div class="top">إرسال القسيمة (EMD) للضيف</div><pre>
+<span class="fx">EMR/EPR-EML-</span><span class="vr">EMAIL</span><span class="fx">/L</span><span class="vr">#</span>
+          </pre></div>
+          <div class="hint">القسائم مرتبطة بنفس رقم الجوال داخل الحجز.</div>
+        `
+      },
+      {
+        title: "الغرامة (+) + فرق سعر (-)",
+        desc: "Penalty موجب + Fare Difference سالب.",
+        body: `
+          <div class="code"><div class="top">التسلسل</div><pre>
+<span class="fx">AN</span>
+<span class="fx">FXF/S</span><span class="vr">#</span>
+<span class="fx">TTE/ALL</span>
+<span class="fx">TMX/ALL</span>
+<span class="fx">FXQ/S</span><span class="vr">#</span>
+<span class="fx">TMI/ALL/FP-O</span>  <span class="fx">(الدفع القديم)</span> <span class="fx">+</span> <span class="fx">/CC</span> <span class="fx">(الدفع الجديد)</span>
+<span class="fx">حذف جميع FP - عبر RTF</span>
+<span class="fx">الدفع القديم /FPO</span>
+<span class="fx">RFF</span> . <span class="fx">ER</span> . <span class="fx">ER</span>
+<span class="fx">TQO</span>
+<span class="fx">TTP/T</span><span class="vr">#</span><span class="fx">/TTM/RT</span>
+          </pre></div>
+        `
+      },
+      {
+        title: "بدون غرامة (0) + بدون فرق سعر (0) + جراند توتال (0)",
+        desc: "كلها صفر.",
+        body: `
+          <div class="code"><div class="top">التسلسل</div><pre>
+<span class="fx">AN</span>
+<span class="fx">FXF/S</span><span class="vr">#</span>
+<span class="fx">TTE/ALL</span>
+<span class="fx">TMX/ALL</span>
+<span class="fx">FXQ/S</span><span class="vr">#</span>
+<span class="fx">حذف جميع FP - عبر RTF</span>
+<span class="fx">الدفع القديم /FPO</span>
+<span class="fx">RFF</span> . <span class="fx">ER</span> . <span class="fx">ER</span>
+<span class="fx">TQO</span>
+<span class="fx">TTP/T</span><span class="vr">#</span><span class="fx">/RT</span>
+          </pre></div>
+        `
+      },
+      {
+        title: "REVALIDATION (إعادة تفعيل)",
+        desc: "غرامة + بدون فرق سعر + إصدار EMD ثم تفعيل التذكرة.",
+        body: `
+          <div class="code"><div class="top">التسلسل</div><pre>
+<span class="fx">AN</span>
+<span class="fx">FXF/S</span><span class="vr">#</span>
+<span class="fx">TTE/ALL</span>
+<span class="fx">TMX/ALL</span>
+<span class="fx">FXQ/S</span><span class="vr">#</span>
+<span class="fx">TMI/ALL/FP-CC</span>
+<span class="fx">RFF</span> . <span class="fx">ER</span> . <span class="fx">ER</span>
+<span class="fx">TTM/RT</span>
+<span class="fx">TTP/ETRV/E</span><span class="vr">#</span><span class="fx">/S</span><span class="vr">#</span><span class="fx">/L</span><span class="vr">#</span><span class="fx">/RT</span>
+          </pre></div>
+          <div class="hint">
+            إذا مبلغ الغرامة = <span class="fx">0</span> فقط نفّذ: <span class="fx">TTP/ETRV/E#/S#/L#/RT</span><br/>
+            <span class="fx">E</span>=رقم الكوبون داخل التذكرة، <span class="fx">S</span>=رقم سطر الرحلة، <span class="fx">L</span>=رقم التذكرة من <span class="fx">RTF</span>.
+          </div>
+        `
+      },
+      {
+        title: "تعديل/ترقية الباقة (Fare Family)",
+        desc: "ترقية كل الرحلات لباقة واحدة أو باقات مختلفة.",
+        body: `
+          <div class="code"><div class="top">إيجاد كود الباقة</div><pre>
+<span class="fx">FXX</span>  <span class="fx">أو</span>  <span class="fx">FXY/S</span><span class="vr">#</span>
+          </pre></div>
+
+          <div class="code"><div class="top">كل الرحلات على باقة واحدة</div><pre>
+<span class="fx">FXF/S</span><span class="vr">#,#</span><span class="fx">/FF-</span><span class="vr">الباقة</span>
+<span class="fx">TTE/ALL</span>
+<span class="fx">TMX/ALL</span>
+<span class="fx">FXQ/S</span><span class="vr">#,#</span><span class="fx">/FF-</span><span class="vr">الباقة</span>
+<span class="fx">ثم أكمل حسب سيناريو الدفع</span>
+          </pre></div>
+
+          <div class="code"><div class="top">كل الرحلات على باقات مختلفة</div><pre>
+<span class="fx">FXF/S</span><span class="vr">#,#</span><span class="fx">/FF</span><span class="vr">#</span><span class="fx">-</span><span class="vr">باقة</span> <span class="fx">/FF</span><span class="vr">#</span><span class="fx">-</span><span class="vr">باقة</span>
+<span class="fx">TTE/ALL</span>
+<span class="fx">TMX/ALL</span>
+<span class="fx">FXQ/S</span><span class="vr">#,#</span><span class="fx">/FF</span><span class="vr">#</span><span class="fx">-</span><span class="vr">باقة</span> <span class="fx">/FF</span><span class="vr">#</span><span class="fx">-</span><span class="vr">باقة</span>
+<span class="fx">ثم أكمل حسب سيناريو الدفع</span>
+          </pre></div>
+        `
+      },
+      {
+        title: "تذكرة مفتوحة (TICKET OPEN) + ربط التذكرة (FHE)",
+        desc: "تستخدم عند وجود ETKT مفتوحة/مشاكل مطابقة.",
+        body: `
+          <div class="code"><div class="top">الربط</div><pre>
+<span class="fx">FHE</span><span class="vr">065-##########</span><span class="fx">/O/C</span><span class="vr">#</span><span class="fx">/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">FXQ/S</span><span class="vr">#</span>
+          </pre></div>
+
+          <div class="sec">
+            <h3>أخطاء مطابقة شائعة (داخل FHE)</h3>
+            <ul>
+              <li><span class="vr">NO MATCH FOR BOARD/OFF POINTS BETWEEN C1/S2</span> = الرحلات بالحجز غير مطابقة للتذكرة.</li>
+              <li><span class="vr">NO MATCH FOR BOOKING CLASS BETWEEN C1/S2</span> = الدرجة غير مطابقة.</li>
+              <li><span class="vr">PAX IN PNR DOES NOT MATCH PAX IN ETKT</span> = الاسم/المسافر غير مطابق.</li>
+              <li><span class="vr">NUMBER OF SEGS/ETKT CPNS DO NOT MATCH</span> = عدد القطاعات/الكوبونات غير مطابق.</li>
+            </ul>
+          </div>
+
+          <div class="hint">تنويه: تأكد من رقم الجوال <span class="fx">XT/TWD</span> وتاريخ إصدار/صلاحية التذكرة قبل أي إجراء.</div>
+        `
+      },
+      {
+        title: "الخدمات (مدفوعة/مجانية) + SPLIT",
+        desc: "XBAG / SEAT / خدمات مجانية / فصل الحجز.",
+        body: `
+          <div class="code"><div class="top">الخدمات المدفوعة (XBAG / SEAT) — تسلسل موحد</div><pre>
+<span class="fx">TTE/ALL</span> + <span class="fx">TMX/ALL</span>  <span class="fx">(تنظيف)</span>
+<span class="fx">RTG</span>  <span class="fx">(قائمة الخدمات)</span>
+<span class="fx">FXG/L</span><span class="vr">#</span>  <span class="fx">(تثبيت تسعير الخدمة)</span>
+<span class="fx">TMI/ALL/FP-CC</span>  <span class="fx">(دفع بطاقة الضيف)</span>
+<span class="fx">RFF</span> . <span class="fx">ER</span> . <span class="fx">ER</span>
+<span class="fx">TTM/RT</span>
+          </pre></div>
+
+          <div class="code"><div class="top">الخدمات المجانية</div><pre>
+<span class="fx">SR WCHR/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">SR WCHS/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">SR WCHC/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">SR BSCT/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">SR BLND/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">SR DEAF/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+          </pre></div>
+
+          <div class="code"><div class="top">الفصل SPLIT</div><pre>
+<span class="fx">TTE/ALL</span> + <span class="fx">TMX/ALL</span>  <span class="fx">(تنظيف)</span>
+<span class="fx">RFF</span> . <span class="fx">ER</span> . <span class="fx">ER</span>
+<span class="fx">SP</span><span class="vr">#</span>
+<span class="fx">EF</span> . <span class="fx">EF</span> . <span class="fx">RFF</span>
+<span class="fx">RFF</span> . <span class="fx">ER</span> . <span class="fx">ER</span>
+<span class="fx">RTAXR</span>  <span class="fx">(الانتقال للحجز الآخر)</span>
+          </pre></div>
+
+          <div class="hint">لا يمكن فصل حجوزات المكاتب السياحية ولا حجوزات القروب (G). بعد الفصل لازم تزويد الضيف بأرقام الحجوزات.</div>
+        `
+      },
+      {
+        title: "خدمة التنفيذي (التنفيذي)",
+        desc: "إضافة خدمة التنفيذي بالـ SSR + دفع + TTM/RT.",
+        body: `
+          <div class="code"><div class="top">التسلسل</div><pre>
+<span class="fx">TTE/ALL</span> + <span class="fx">TMX/ALL</span>
+<span class="fx">RFF</span> . <span class="fx">ER</span> . <span class="fx">ER</span>
+<span class="fx">SR</span> <span class="vr">كود_التنفيذي</span><span class="fx">/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">RTG</span>
+<span class="fx">FXG/L</span>
+<span class="fx">TMI/ALL/FP-CC</span>
+<span class="fx">RFF</span> . <span class="fx">ER</span> . <span class="fx">ER</span>
+<span class="fx">TTM/RT</span>
+          </pre></div>
+          <div class="hint">كود الخدمة حسب النوع: <span class="fx">MGDA</span> (إقلاع) / <span class="fx">MGAA</span> (وصول) / <span class="fx">MGBA</span> (إقلاع+وصول) وبحسب مجموعات المطارات A/B/C.</div>
+        `
+      },
+      {
+        title: "أنواع الكوبونات + حالات الرحلة بالحجز",
+        desc: "لفهم O/A/C/F/E… وحالات HK/TK/UN… قبل أي إجراء.",
+        body: `
+          <div class="code"><div class="top">أنواع الكوبونات داخل التذكرة (مختصر)</div><pre>
+<span class="fx">O</span> = Open for use
+<span class="fx">A</span> = Airport control (تأكد من وقت الإقلاع)
+<span class="fx">C</span> = In checked (لا تعديل/استرجاع إلا بعد إلغاء بطاقة الصعود)
+<span class="fx">F</span> = Used
+<span class="fx">E</span> = Reissued/Exchanged
+<span class="fx">V</span> = Cancelled by system
+<span class="fx">S</span> / <span class="fx">U</span> = No-show (قد يفتح بعد رسوم)
+<span class="fx">Z</span> = No-show مع Boarding (قد يفقد الكوبون)
+          </pre></div>
+
+          <div class="code"><div class="top">حالات الرحلة بالحجز (مختصر)</div><pre>
+<span class="fx">HK</span> = Confirmed
+<span class="fx">HL</span> = Waiting List
+<span class="fx">KL</span> = Waitlist مؤكد (يتحول HK ثم تسعير/إصدار)
+<span class="fx">TK</span> = Schedule Change
+<span class="fx">UN</span> = Schedule Change/Cancelled
+<span class="fx">HX</span> = Cancelled waiting list
+<span class="fx">GN/GK</span> = Ghost flight (طلب تأكيد)
+          </pre></div>
+        `
+      },
+      {
+        title: "التغيب عن السفر (No-Show)",
+        desc: "حسب حالة الكوبون (O/S/Z/U) وخط سير واحد أو أكثر.",
+        body: `
+          <div class="code"><div class="top">مبدأ التعامل</div><pre>
+<span class="fx">O</span> = تختار خطوط السير/الرحلات + تسعير وتكمل حسب السيناريو (رسوم قد تُضاف تلقائيًا)
+<span class="fx">S</span> / <span class="fx">U</span> = حفظ + ريمارك + رفع طلب للإصدار اليدوي
+<span class="fx">Z</span> = إبلاغ الضيف بفقدان قيمة الكوبون/الجزء حسب الحالة + رفع طلب يدوي إذا مطلوب
+          </pre></div>
+        `
+      },
+      {
+        title: "التعديلات الإجبارية (TK / UN)",
+        desc: "تقديم/تأخير/إلغاء تشغيلي مع شروط الاستحقاق.",
+        body: `
+          <div class="code"><div class="top">ملاحظات أساسية</div><pre>
+<span class="fx">TK</span> = تعديل تشغيلي (تقديم/تأخير)
+<span class="fx">UN</span> = تعديل/إلغاء تشغيلي
+الاستحقاق يعتمد على وقت الإقلاع + مدة التغيير (ساعة/ساعتين/4 ساعات) و/أو 60 يوم للـ UN.
+إذا نفس الدرجة: يمكن التنفيذ لدينا عبر:
+<span class="fx">TTP/ETRV/IVI/E</span><span class="vr">#</span><span class="fx">/S</span><span class="vr">#</span><span class="fx">/L</span><span class="vr">#</span><span class="fx">/RT</span>
+درجة مختلفة: رفع ايميل.
+          </pre></div>
+        `
+      },
+      {
+        title: "ربط طفل بحجز بالغ",
+        desc: "إنشاء حجز الطفل + ربطه مع عائلة + إصدار.",
+        body: `
+          <div class="code"><div class="top">تسلسل مختصر</div><pre>
+<span class="fx">AN</span>
+<span class="fx">FXX/RCHD</span>
+<span class="fx">FXX/RCHD/FF-</span><span class="vr">الباقة</span>
+<span class="fx">NM1</span> <span class="vr">LAST</span>/<span class="vr">FIRST</span> <span class="fx">(CHD/</span><span class="vr">DATE</span><span class="fx">)</span>
+<span class="fx">APM-SV/M+966</span><span class="vr">###</span>
+<span class="fx">APN-SV/M+966</span><span class="vr">###</span>
+<span class="fx">APE-</span><span class="vr">EMAIL</span>
+<span class="fx">TKOK</span>
+<span class="fx">RFF</span> . <span class="fx">ER</span> . <span class="fx">ER</span>
+<span class="fx">SR DOCS SV HK1-</span>...
+<span class="fx">FXP</span>
+<span class="fx">FXP/FF-</span><span class="vr">الباقة</span>
+<span class="fx">FP-SADAD</span>
+<span class="fx">RM*** WITH FAMILY -PNR- ***</span>
+<span class="fx">RFF</span> . <span class="fx">ER</span> . <span class="fx">ER</span>
+<span class="fx">TTP/RT</span>
+          </pre></div>
+        `
+      },
+      {
+        title: "إضافة رضيع على حجز سابق + ربط رضيع مع بالغ آخر",
+        desc: "إصدار تذكرة INF على PNR موجود + سيناريو ربط/تفعيل.",
+        body: `
+          <div class="code"><div class="top">إضافة رضيع على حجز سابق</div><pre>
+<span class="fx">اضافة SRDOCS للرضيع</span>
+<span class="fx">TTE/ALL</span>
+<span class="fx">TMX/ALL</span>
+<span class="fx">FXP/RINF</span>
+<span class="fx">FP INF CC</span>  <span class="fx">(الدفع)</span>
+<span class="fx">RFF</span> . <span class="fx">ER</span> . <span class="fx">ER</span>
+<span class="fx">TQO</span>
+<span class="fx">TTP/T</span><span class="vr">#</span><span class="fx">/RT</span>
+          </pre></div>
+
+          <div class="code"><div class="top">تفعيل/ربط الرضيع (إذا مطابقة)</div><pre>
+<span class="fx">FHE INF</span> <span class="vr">065-##########</span><span class="fx">/O/C</span><span class="vr">#</span><span class="fx">/S</span><span class="vr">#</span><span class="fx">/P</span><span class="vr">#</span>
+<span class="fx">TTP/ETRV/E</span><span class="vr">#</span><span class="fx">/S</span><span class="vr">#</span><span class="fx">/L</span><span class="vr">#</span><span class="fx">/RT</span>
+          </pre></div>
+
+          <div class="hint">إذا رحلات/تذكرة الرضيع غير مطابقة: استخدم <span class="fx">FXF/S#/T#</span> ثم <span class="fx">TTE/ALL</span> + <span class="fx">TMX/ALL</span> ثم <span class="fx">FXQ/S#/T#</span> وأكمل حسب السيناريو.</div>
+        `
+      },
+      {
+        title: "طرق الدفع + أخطاء النظام الشائعة وحلولها",
+        desc: "قوالب CC + قائمة Errors وتفسير حل سريع.",
+        body: `
+          <div class="code"><div class="top">أنواع البطاقات (FOP)</div><pre>
+<span class="fx">VISA</span> : <span class="vr">CCVI</span>
+<span class="fx">Master</span> : <span class="vr">CCCA</span>
+<span class="fx">AMEX</span> : <span class="vr">CCAX</span>
+
+<span class="fx">مثال:</span> <span class="fx">FP-CC</span><span class="vr">XXXXXXXXXXXX4847</span><span class="vr">CCVI</span>/<span class="vr">MMYY</span>*<span class="vr">CVV</span>
+          </pre></div>
+
+          <div class="sec">
+            <h3>أخطاء وحلول</h3>
+            <ul>
+              <li><span class="vr">FOP RJT: NEED FORM OF PAYMENT</span> = أدخل وسيلة الدفع (خصوصًا القديمة /FPO عند التعديل).</li>
+              <li><span class="vr">PREVIOUS TST EXISTS/SEGMENT OVERLAP</span> = <span class="fx">TTE/ALL</span> ثم <span class="fx">TMX/ALL</span>.</li>
+              <li><span class="vr">SEGMENT DUPLICATE</span> = لا تحذف القطاعات قبل التأكد/التنبيه + تحقق من التطابق.</li>
+              <li><span class="vr">NEED RECEIVED FROM</span> = احفظ التغييرات.</li>
+              <li><span class="vr">NUMBER OF SEGS/ETKT CPNS</span> = عدّل ربط الكوبونات/القطاعات.</li>
+              <li><span class="vr">SELECT FA OR FHE PNR LINE NUMBER</span> = اختر رقم السطر الصحيح للتذكرة.</li>
+              <li><span class="vr">NEED TICKETING ARRANGEMENT</span> = <span class="fx">TKOK</span>.</li>
+              <li><span class="vr">ITINERARY DISCREPANCY BETWEEN TKTS</span> = جرّب تسعير منفصل: <span class="fx">FXQ/S#</span><span class="fx">/T#</span>.</li>
+            </ul>
+          </div>
+        `
+      }
+    ];
+
+    function buildAccordion(container, items){
+      container.innerHTML = "";
+      items.forEach((it, idx)=>{
+        const item = document.createElement("div");
+        item.className = "accItem";
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "accBtn";
+        btn.innerHTML = `
+          <div class="num">${idx+1}</div>
+          <div class="meta">
+            <div class="t">${it.title}</div>
+            <div class="d">${it.desc}</div>
+          </div>
+        `;
+
+        const body = document.createElement("div");
+        body.className = "accBody";
+        body.innerHTML = it.body;
+
+        btn.addEventListener("click", ()=>{
+          const isOpen = item.classList.contains("open");
+          container.querySelectorAll(".accItem").forEach(x=>x.classList.remove("open"));
+          if(!isOpen) item.classList.add("open");
+        });
+
+        item.appendChild(btn);
+        item.appendChild(body);
+        container.appendChild(item);
+      });
+
+      const first = container.querySelector(".accItem");
+      if(first) first.classList.add("open");
+    }
+
+    // build pre booking
+    buildAccordion(document.getElementById("steps"), stepsData);
+    buildAccordion(document.getElementById("addons"), addOns);
+
+    // build after sales
+    buildAccordion(document.getElementById("afterSales"), afterSalesData);
+
+    // Script toggles
+    const scriptBtnAr = document.getElementById("scriptBtnAr");
+    const scriptBtnEn = document.getElementById("scriptBtnEn");
+    const scriptBodyAr = document.getElementById("scriptBodyAr");
+    const scriptBodyEn = document.getElementById("scriptBodyEn");
+
+    function toggleScript(btn, body){
+      if(!btn || !body) return;
+      const open = body.classList.toggle("open");
+      btn.textContent = open ? "إغلاق" : (btn.id === "scriptBtnAr" ? "العربي" : "English");
+      if(body === scriptBodyAr && scriptBodyEn){
+        scriptBodyEn.classList.remove("open");
+        if(scriptBtnEn) scriptBtnEn.textContent = "English";
+      }
+      if(body === scriptBodyEn && scriptBodyAr){
+        scriptBodyAr.classList.remove("open");
+        if(scriptBtnAr) scriptBtnAr.textContent = "العربي";
+      }
+    }
+    if(scriptBtnAr && scriptBodyAr) scriptBtnAr.addEventListener("click", ()=>toggleScript(scriptBtnAr, scriptBodyAr));
+    if(scriptBtnEn && scriptBodyEn) scriptBtnEn.addEventListener("click", ()=>toggleScript(scriptBtnEn, scriptBodyEn));
+
+    // Optional: second script card simple toggle (kept as-is behavior)
+    const scriptBtn = document.getElementById("scriptBtn");
+    const scriptBody = document.getElementById("scriptBody");
+    if(scriptBtn && scriptBody){
+      scriptBtn.addEventListener("click", ()=>{
+        const open = scriptBody.classList.toggle("open");
+        scriptBtn.textContent = open ? "إغلاق" : "فتح";
+      });
+    }
+
+    // default mode
+    setMode("pre");
+  </script>
+</body>
+</html>
+```
